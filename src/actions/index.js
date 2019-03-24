@@ -72,6 +72,19 @@ const fetchRentalsFail = (errors) => {
   }
 }
 
+export const fetchFilter = (category) => {
+  const url = category ? `/rentals/filter?category=${category}` : '/rentals';
+
+  return dispatch => {
+    dispatch(fetchRentalsInit());
+
+    axiosInstance.get(url)
+      .then(res => res.data )
+      .then(rentals => dispatch(fetchRentalsSuccess(rentals)))
+      .catch(({response}) => dispatch(fetchRentalsFail(response.data.errors)))
+  }
+}
+
 export const fetchRentals = (city) => {
   const url = city ? `/rentals?city=${city}` : '/rentals';
 
@@ -250,10 +263,21 @@ export const createBooking = (booking) => {
 export const uploadImage = image => {
   const formData = new FormData();
   formData.append('image', image);
-
+  console.log(formData);
   return axiosInstance.post('/image-upload', formData)
     .then(json => {
       return json.data.imageUrl;
+    })
+    .catch(({response}) => Promise.reject(response.data.errors[0]))
+}
+
+export const deleteImage = image => {
+  const formData = new FormData();
+  formData.append('image', image);
+
+  return axiosInstance.post('/image-delete', {image})
+    .then(json => {
+      return json.data.message;
     })
     .catch(({response}) => Promise.reject(response.data.errors[0]))
 }

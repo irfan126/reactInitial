@@ -15,7 +15,7 @@ export class RentalCreate extends React.Component {
     }
 
     this.rentalCateogies = ['apartment', 'house', 'condo'];
-
+   // this.noImageLink = "https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553026864391";
     this.createRental = this.createRental.bind(this);
   }
 
@@ -34,19 +34,11 @@ export class RentalCreate extends React.Component {
     return (
       <section id='newRental'>
         <div className='bwm-form'>
-          <div className='row'>
-            <div className='col-md-5'>
+          <div className='col'>
               <h1 className='page-title'>Create Rental</h1>
               <RentalCreateForm submitCb={this.createRental}
                                 options={this.rentalCateogies}
                                 errors={this.state.errors}/>
-            </div>
-            <div className='col-md-6 ml-auto'>
-              <div className='image-container'>
-                <h2 className='catchphrase'>Hundreds of awesome places in reach of few clicks.</h2>
-                <img src={process.env.PUBLIC_URL + '/img/create-rental.jpg'} alt=''/>
-              </div>
-            </div>
           </div>
         </div>
       </section>

@@ -4,6 +4,9 @@ import { RentalDetailInfo } from './RentalDetailInfo';
 import RentalMap from './RentalMap';
 import Booking from 'components/booking/Booking';
 
+import "react-responsive-carousel/lib/styles/carousel.css";
+import { Carousel } from 'react-responsive-carousel';
+
 import * as actions from 'actions';
 
 class RentalDetail extends React.Component {
@@ -23,7 +26,28 @@ class RentalDetail extends React.Component {
           <div className='upper-section'>
             <div className='row'>
               <div className='col-md-6'>
-                <img src={rental.image} alt=''></img>
+              <Carousel showArrows={true} showThumbs={false} autoPlay={true}>
+                <div>
+                    {(rental.image1 === 'none') && <img alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
+                    {!(rental.image1 === 'none') && <img alt='image1' src={rental.image1}/> }
+                </div>
+                <div>
+                    {(rental.image2 === 'none') && <img alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
+                    {!(rental.image2 === 'none') && <img alt='image2' src={rental.image2}/> }
+                </div>
+                <div>
+                    {(rental.image3 === 'none') && <img alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
+                    {!(rental.image3 === 'none') && <img alt='image3' src={rental.image3}/> }
+                </div>
+                <div>
+                    {(rental.image4 === 'none') && <img alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
+                    {!(rental.image4 === 'none') && <img alt='image4' src={rental.image4}/> }
+                </div>
+                <div>
+                    {(rental.image5 === 'none') && <img alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
+                    {!(rental.image5 === 'none') && <img alt='image5' src={rental.image5}/> }
+                </div>
+            </Carousel>
               </div>
               <div className='col-md-6'>
                 <RentalMap location={`${rental.city}, ${rental.street}`} />
@@ -37,8 +61,8 @@ class RentalDetail extends React.Component {
                 <RentalDetailInfo rental={rental} />
               </div>
               <div className='col-md-4'>
-               <Booking rental={rental} />
-              </div>
+                <Booking rental={rental} />
+             </div>
             </div>
           </div>
         </section>
@@ -50,6 +74,7 @@ class RentalDetail extends React.Component {
     }
   }
 }
+
 
 function mapStateToProps(state) {
   return {

@@ -10,12 +10,13 @@ const rentalRoutes = require('./routes/rentals'),
       userRoutes = require('./routes/users'),
       bookingRoutes = require('./routes/bookings'),
       paymentRoutes = require('./routes/payments'),
-      imageUploadRoutes = require('./routes/image-upload');
+      imageUploadRoutes = require('./routes/image-upload'),
+      imageDeleteRoutes = require('./routes/image-delete');
 
 mongoose.connect(config.DB_URI).then(() => {
   if (process.env.NODE_ENV !== 'production') {
     const fakeDb = new FakeDb();
-    //fakeDb.seedDb();
+  //  fakeDb.seedDb();
   }
 });
 
@@ -28,6 +29,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/bookings', bookingRoutes);
 app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1', imageUploadRoutes);
+app.use('/api/v1', imageDeleteRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {

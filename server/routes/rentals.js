@@ -10,6 +10,28 @@ router.get('/secret', UserCtrl.authMiddleware, function(req, res) {
   res.json({"secret": true});
 });
 
+router.get('/filter', function(req, res) {
+  const category = req.query.category;
+   console.log('filter');
+  console.log(req.query);
+  const query = category ? {category: category.toLowerCase()} : {};
+
+  Rental.find(query)
+      .select('-bookings')
+      .exec(function(err, foundRentals) {
+
+    if (err) {
+      return res.status(422).send({errors: normalizeErrors(err.errors)});
+    }
+
+    if (category && foundRentals.length === 0) {
+      return res.status(422).send({errors: [{title: 'No Rentals Found!', detail: `There are no rentals for category ${category}`}]});
+    }
+
+    return res.json(foundRentals);
+  });
+});
+
 router.get('/manage',  UserCtrl.authMiddleware, function(req, res) {
   const user = res.locals.user;
 
@@ -127,10 +149,10 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
 });
 
 router.post('', UserCtrl.authMiddleware, function(req, res) {
-  const { title, city, street, category, image, shared, bedrooms, description, dailyRate } = req.body;
+  const { title, city, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate } = req.body;
   const user = res.locals.user;
 
-  const rental = new Rental({title, city, street, category, image, shared, bedrooms, description, dailyRate});
+  const rental = new Rental({title, city, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate});
   rental.user = user;
 
   Rental.create(rental, function(err, newRental) {
@@ -141,11 +163,13 @@ router.post('', UserCtrl.authMiddleware, function(req, res) {
     User.update({_id: user.id}, { $push: {rentals: newRental}}, function(){});
 
     return res.json(newRental);
-  });
+  }); 
 });
 
 router.get('', function(req, res) {
   const city = req.query.city;
+     console.log('searchInput');
+     console.log(req.query);
   const query = city ? {city: city.toLowerCase()} : {};
 
   Rental.find(query)

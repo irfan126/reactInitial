@@ -6,13 +6,16 @@ export function RentalDetailInfo(props) {
   const rental = props.rental;
 
   return (
-      <div className='rental'>
+      <div className='rental col'>
         <h2 className={`rental-type ${rental.category}`}>{rentalType(rental.shared)} {rental.category}</h2>
         <div className="rental-owner">
           <img src="https://api.adorable.io/avatars/285/abott@adorable.png" alt="owner"/>
           <span>{rental.user && rental.user.username}</span>
         </div>
-        <h1 className='rental-title'>{rental.title}</h1>
+        <h1 className='rental-title'>{rental.title}</h1>       
+        <h3 className='booking-price'>$ {rental.dailyRate} <span className='booking-per-night'>per night</span></h3>
+        <hr></hr>
+
         <h2 className='rental-city'>{toUpperCase(rental.city)}</h2>
         <div className='rental-room-info'>
           <span><i className='fa fa-building'></i>{rental.bedrooms} bedrooms</span>

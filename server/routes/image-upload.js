@@ -6,7 +6,6 @@ const upload = require('../services/image-upload');
 
 const singleUpload = upload.single('image');
 
-
 router.post('/image-upload', UserCtrl.authMiddleware, function(req, res) {
   singleUpload(req, res, function(err) {
     if (err) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RentalMap from './RentalMap';
-import Booking from 'components/booking/Booking';
 
 import { UserGuard } from '../../shared/auth/UserGuard';
 import { RentalAssets } from './RentalAssets';
@@ -71,23 +70,11 @@ class RentalUpdate extends React.Component {
       return (
         <UserGuard isAllowed={isAllowed} isFetching={isFetching}>
           <section id='rentalDetails'>
-            <div className='upper-section'>
-              <div className='row'>
-                <div className='col-md-6'>
-                  <EditableImage entity={rental}
-                                 entityField={'image'}
-                                 errors={errors}
-                                 updateEntity={this.updateRental}> </EditableImage>
-                </div>
-                <div className='col-md-6'>
-                  <RentalMap location={`${rental.city}, ${rental.street}`} />
-                </div>
-              </div>
-            </div>
+<div className='row'>
 
+<div className='col-md-6'>
             <div className='details-section'>
-              <div className='row'>
-                <div className='col-md-8'>
+              <div className='col'>
                   <div className='rental'>
                     <label className={`rental-label rental-type ${rental.category}`}> Shared </label>
                     <EditableSelect entity={rental}
@@ -106,12 +93,6 @@ class RentalUpdate extends React.Component {
                                     options={['apartment', 'house', 'condo']}
                                     errors={errors}
                                     resetErrors={this.resetRentalErrors} />
-
-
-                    <div className="rental-owner">
-                      <img src="https://api.adorable.io/avatars/285/abott@adorable.png" alt="owner"/>
-                      <span>{rental.user && rental.user.username}</span>
-                    </div>
 
                     <EditableInput entity={rental}
                                    entityField={'title'}
@@ -158,12 +139,57 @@ class RentalUpdate extends React.Component {
                     <hr></hr>
                     <RentalAssets />
                   </div>
+
+              </div>
+            </div>
+</div>
+
+<div className='col-md-6'>
+            <div className='container-fluid'>
+              <div className='col'>
+                <div className='col-md-6'>
+<hr></hr>
+                  <EditableImage entity={rental}
+                                 entityField={'image1'}
+                                 errors={errors}
+                                 updateEntity={this.updateRental}>
+                  </EditableImage> 
+<hr></hr>
+                  <EditableImage entity={rental}
+                                 entityField={'image2'}
+                                 errors={errors}
+                                 updateEntity={this.updateRental}>
+                  </EditableImage>
+<hr></hr>
+                  <EditableImage entity={rental}
+                                 entityField={'image3'}
+                                 errors={errors}
+                                 updateEntity={this.updateRental}>
+                  </EditableImage>
+<hr></hr>
+                  <EditableImage entity={rental}
+                                 entityField={'image4'}
+                                 errors={errors}
+                                 updateEntity={this.updateRental}>
+                  </EditableImage>
+<hr></hr>
+                  <EditableImage entity={rental}
+                                 entityField={'image5'}
+                                 errors={errors}
+                                 updateEntity={this.updateRental}>
+                  </EditableImage>
+<hr></hr>                  
                 </div>
-                <div className='col-md-4'>
-                 <Booking rental={rental} />
+                <div className='col-md-6'>
+
+                  <RentalMap location={`${rental.city}, ${rental.street}`} />
+
                 </div>
               </div>
             </div>
+</div>
+
+</div>
           </section>
         </UserGuard>
       )

@@ -6,40 +6,39 @@ import { toUpperCase } from 'helpers';
 import * as actions from 'actions';
 
 
-class RentalSearchListing extends React.Component {
+class RentalFilterListing extends React.Component {
 
   constructor() {
     super();
 
     this.state = {
-      searchedCity: ''
+      searchedCategory: ''
     }
   }
 
   componentWillMount() {
-    this.searchRentalsByCity();
+    this.searchRentalsByCategory();
   }
 
   componentDidUpdate(prevProps) {
-    const currentUrlParam = this.props.match.params.city;
-
-    const prevUrlParam = prevProps.match.params.city;
+    const currentUrlParam = this.props.match.params.category;
+    const prevUrlParam = prevProps.match.params.category;
 
     if (currentUrlParam !== prevUrlParam) {
-      this.searchRentalsByCity();
+      this.searchRentalsByCategory();
     }
   }
 
-  searchRentalsByCity() {
-    const searchedCity = this.props.match.params.city;
-    this.setState({searchedCity});
+  searchRentalsByCategory() {
+    const searchedCategory = this.props.match.params.category;
+    this.setState({searchedCategory});
 
-    this.props.dispatch(actions.fetchRentals(searchedCity));
+    this.props.dispatch(actions.fetchFilter(searchedCategory));
   }
 
   renderTitle() {
     const { errors, data } = this.props.rentals;
-    const { searchedCity } = this.state;
+    const { searchedCategory } = this.state;
     let title = '';
 
     if (errors.length > 0) {
@@ -47,7 +46,7 @@ class RentalSearchListing extends React.Component {
     }
 
     if(data.length > 0) {
-      title = `Your Home in City of ${toUpperCase(searchedCity)}`;
+      title = `Your Home in Category of ${toUpperCase(searchedCategory)}`;
     }
 
     return <h1 className="page-title">{title}</h1>
@@ -69,4 +68,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(RentalSearchListing)
+export default connect(mapStateToProps)(RentalFilterListing)

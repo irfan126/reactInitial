@@ -56,6 +56,7 @@ class Header extends React.Component {
           <Link className='navbar-brand' to='/rentals'>BookWithMe
             <img src={process.env.PUBLIC_URL + '/img/react-logo.svg'} alt=""/>
           </Link>
+
           <RentalSearchInput />
           <button className='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
             <span className='navbar-toggler-icon'></span>

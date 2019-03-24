@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import Header from 'components/shared/Header';
 import RentalListing from 'components/rental/rental-listing/RentalListing';
 import RentalSearchListing from 'components/rental/rental-listing/RentalSearchListing';
+import RentalFilterListing from 'components/rental/rental-listing/RentalFilterListing';
 import RentalDetail from 'components/rental/rental-detail/RentalDetail';
 import RentalUpdate from 'components/rental/rental-detail/RentalUpdate';
 import { RentalCreate } from 'components/rental/rental-create/RentalCreate';
@@ -42,7 +43,7 @@ class App extends Component {
 
   render() {
     return (
-      <StripeProvider apiKey="pk_test_HgtMD9wHltUMpDw2mK4VbF6l">
+      <StripeProvider apiKey="pk_test_gD4NpDpp2njguYDcnQx4Hmvl">
         <Provider store={store}>
           <BrowserRouter>
           <div className='App'>
@@ -53,6 +54,7 @@ class App extends Component {
                 <Route exact path='/' render={() =>  <Redirect to='/rentals' /> }/>
                 <Route exact path='/rentals' component={RentalListing} />
                 <Route exact path='/rentals/:city/homes' component={RentalSearchListing} />
+                <Route exact path='/rentals/filter/:category/homes' component={RentalFilterListing} />
                 <ProtectedRoute exact path='/rentals/manage' component={RentalManage} />
                 <ProtectedRoute exact path='/bookings/manage' component={BookingManage} />
                 <ProtectedRoute exact path='/rentals/new' component={RentalCreate} />

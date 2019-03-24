@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditableComponent } from './EditableComponent';
-import { BwmFileUpload } from '../form/BwmFileUpload';
+import { BwmFileUploadEdit } from '../form/BwmFileUploadEdit';
 
 export class EditableImage extends EditableComponent {
 
@@ -23,21 +23,43 @@ export class EditableImage extends EditableComponent {
       <div className='editableComponent'>
         { !isActive &&
           <React.Fragment>
-            <img src={value} alt=''/>
+                        <div className='col'>
+          { (value === 'none') &&
+              <img src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'} alt=''/>
+                  }       
+          { !(value === 'none') &&
+
+                                    <div className='img-upload-container'>
+                          <div className='img-preview'
+                                style={{'backgroundImage': 'url(' + value + ')'}}>
+                          </div>
+                      </div>
+              }
+<div>
             <button onClick={() => this.enableEdit() }
                 className='btn btn-warning btn-editable btn-editable-image'
                 type='button'> Edit
             </button>
+</div>
+            </div>
           </React.Fragment>
         }
 
         { isActive &&
           <React.Fragment>
+
+<div className='col'>
+<div>
             <button onClick={() => this.disableEdit() }
-                  className='btn btn-warning btn-editable btn-editable-image'
-                  type='button'> Close
+                  className='btn btn-warning btn-upload'
+                  type='button'> Cancel
             </button>
-            <BwmFileUpload onChange={this.handleImageUpload}></BwmFileUpload>
+</div>
+            <BwmFileUploadEdit imageURL={value}
+                              onChange={this.handleImageUpload}>
+            </BwmFileUploadEdit>
+</div>
+
           </React.Fragment>
         }
       </div>

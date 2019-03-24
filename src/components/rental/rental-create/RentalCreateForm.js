@@ -11,6 +11,8 @@ const RentalCreateForm = props => {
   const { handleSubmit, pristine, submitting, submitCb, valid, options, errors } = props
   return (
     <form onSubmit={handleSubmit(submitCb)}>
+<div className='row'>
+<div className='col-md-6'>
     <Field
         name="title"
         type="text"
@@ -47,11 +49,7 @@ const RentalCreateForm = props => {
         className='form-control'
         component={BwmSelect}
       />
-      <Field
-        name="image"
-        label='Image'
-        component={BwmFileUpload}
-      />
+
       <Field
         name="bedrooms"
         type="number"
@@ -74,15 +72,46 @@ const RentalCreateForm = props => {
         className='form-control'
         component={BwmInput}
       />
+</div>
+<div className='col-md-6'>
+<h1 className='page-title'>Add Images</h1>
+            <Field
+        name="image1"
+        label='Image1'
+        component={BwmFileUpload}
+      />
+       <Field
+        name="image2"
+        label='Image2'
+        component={BwmFileUpload}
+      />           
+       <Field
+        name="image3"
+        label='Image3'
+        component={BwmFileUpload}
+      />
+      <Field
+        name="image4"
+        label='Image4'
+        component={BwmFileUpload}
+      />
+      <Field
+        name="image5"
+        label='Image5'
+        component={BwmFileUpload}
+      />
+</div>
+</div>
       <button className='btn btn-bwm btn-form' type="submit" disabled={!valid || pristine || submitting}>
         Create Rental
       </button>
       <BwmResError errors={errors} />
     </form>
+
   )
 }
-
+//https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365
 export default reduxForm({
   form: 'rentalCreateForm',
-  initialValues: { shared: false, category: 'apartment'}
+  initialValues: { shared: false, category: 'apartment', image: 'none'}
 })(RentalCreateForm)

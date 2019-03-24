@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import * as actions from 'actions';
 
 
-export class BwmFileUpload extends React.Component {
+export class BwmFileUploadEdit extends React.Component {
 
   constructor() {
     super();
@@ -118,7 +118,7 @@ export class BwmFileUpload extends React.Component {
   onDeleteSuccess(message) {
     const {onChange} = this.props.input || this.props;
 
-    toast.error('Image Deleted');
+    toast.error('Image Deleted!');
 
     this.resetToDefaultState('INIT', '');
 
@@ -173,6 +173,7 @@ export class BwmFileUpload extends React.Component {
 
   render() {
     const { selectedFile, imageBase64, crop, initialImageBase64, status,displayUploadedImage} = this.state;
+        const { imageURL } = this.props;
     return (
 
       <div className='img-upload-container'>
@@ -194,6 +195,13 @@ export class BwmFileUpload extends React.Component {
             </div>
           </div>
         }
+                { !(imageURL === 'none') && !imageBase64 &&
+          <div className='img-preview-container'>
+            <div className='img-preview'
+                 style={{'backgroundImage': 'url(' + imageURL + ')'}}>
+            </div>
+          </div>
+        }
 
         { !(status === 'OK') &&
         <label className='img-upload btn btn-bwm'>
@@ -203,7 +211,7 @@ export class BwmFileUpload extends React.Component {
                 onChange={this.onChange}/>
         </label>
       }
-
+        
         { selectedFile && 
           <button className='btn btn-success btn-upload'
                   type='button'
@@ -213,17 +221,10 @@ export class BwmFileUpload extends React.Component {
           </button>
           }
 
-        { selectedFile && 
-            <button onClick={() => this.resetToDefaultState('INIT', '')}
-                  className='btn btn-warning btn-editable btn-editable-image'
-                  type='button'> Cancel
-            </button>
-        }
-
-        {  (status === 'OK') &&
-            <button className='img-upload btn btn-bwm'
+        {  !(imageURL === 'none') && !imageBase64 &&
+            <button className='btn btn-warning btn-upload'
                     type='button'
-                    onClick={()  => this.deleteImage(displayUploadedImage)}
+                    onClick={()  => this.deleteImage(imageURL)}
                    > Delete Image
             </button>
         }

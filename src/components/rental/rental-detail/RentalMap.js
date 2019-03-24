@@ -14,6 +14,7 @@ class RentalMap extends React.Component {
     const { location, map: {isReloading} } = this.props;
 
     return (
+<div className='col'>
       <MapWithGeocode
         googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW9tFSqG2mA0ym2NluRBVGZ6tPr8xbwRM&libraries=geometry,drawing,places"
         loadingElement={<div style={{ height: `100%` }} />}
@@ -23,6 +24,8 @@ class RentalMap extends React.Component {
         isReloading={isReloading}
         mapLoaded={() => this.reloadMapFinish()}
       />
+
+</div>
     )
   }
 }

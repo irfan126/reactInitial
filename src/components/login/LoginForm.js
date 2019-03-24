@@ -23,6 +23,7 @@ const LoginForm = props => {
         className='form-control'
         component={BwmInput}
         validate={[required]}
+        autocomplete='current-password'
       />
       <button className='btn btn-bwm btn-form' type="submit" disabled={!valid || pristine || submitting}>
         Login
