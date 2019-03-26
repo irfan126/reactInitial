@@ -10,6 +10,7 @@ import { BwmResError } from 'components/shared/form/BwmResError';
 const RentalCreateForm = props => {
   const { handleSubmit, pristine, submitting, submitCb, valid, options, errors } = props
   return (
+<div className='pb3'>
     <form onSubmit={handleSubmit(submitCb)}>
 <div className='row'>
 <div className='col-md-6'>
@@ -75,31 +76,37 @@ const RentalCreateForm = props => {
 </div>
 <div className='col-md-6'>
 <h1 className='page-title'>Add Images</h1>
+<hr></hr>
             <Field
         name="image1"
         label='Image1'
         component={BwmFileUpload}
       />
+<hr></hr>
        <Field
         name="image2"
         label='Image2'
         component={BwmFileUpload}
-      />           
+      />
+<hr></hr>          
        <Field
         name="image3"
         label='Image3'
         component={BwmFileUpload}
       />
+<hr></hr>
       <Field
         name="image4"
         label='Image4'
         component={BwmFileUpload}
       />
+<hr></hr>
       <Field
         name="image5"
         label='Image5'
         component={BwmFileUpload}
       />
+<hr></hr>
 </div>
 </div>
       <button className='btn btn-bwm btn-form' type="submit" disabled={!valid || pristine || submitting}>
@@ -107,7 +114,7 @@ const RentalCreateForm = props => {
       </button>
       <BwmResError errors={errors} />
     </form>
-
+</div>
   )
 }
 //https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365

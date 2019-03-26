@@ -6,6 +6,7 @@ import { StripeProvider } from 'react-stripe-elements';
 
 import { ToastContainer } from 'react-toastify';
 import Header from 'components/shared/Header';
+import Scroll from 'components/shared/Scroll';
 import RentalListing from 'components/rental/rental-listing/RentalListing';
 import RentalSearchListing from 'components/rental/rental-listing/RentalSearchListing';
 import RentalFilterListing from 'components/rental/rental-listing/RentalFilterListing';
@@ -47,8 +48,8 @@ class App extends Component {
         <Provider store={store}>
           <BrowserRouter>
           <div className='App'>
-            <ToastContainer />
             <Header logout={this.logout}/>
+            <ToastContainer />
             <div className='container'>
               <Switch>
                 <Route exact path='/' render={() =>  <Redirect to='/rentals' /> }/>

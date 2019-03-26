@@ -38,7 +38,7 @@ export class RentalManageCard extends React.Component {
     const deleteClass = wantDelete ? 'toBeDeleted' : '';
 
     return (
-      <div className='col-md-4'>
+      <div className='col-md-4 grow'>
         <div className={`card text-center ${deleteClass}`}>
           <div className='card-block'>
             <h4 className='card-title'>{rental.title} - {toUpperCase(rental.city)}</h4>
@@ -46,7 +46,7 @@ export class RentalManageCard extends React.Component {
             { rental.bookings && rental.bookings.length > 0 && modal }
           </div>
           <div className='card-footer text-muted'>
-            Created at {pretifyDate(rental.createdAt)}
+            Created: {pretifyDate(rental.createdAt)}
             { !wantDelete &&
               <React.Fragment>
                 <button onClick={() => { this.showDeleteMenu() }} className='btn btn-danger'> Delete </button>

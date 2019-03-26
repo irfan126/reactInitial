@@ -16,10 +16,10 @@ export class EditableText extends EditableComponent {
                     rows={rows}
                     cols={cols}></textarea>
           <button onClick={() => this.update() }
-                  className='btn btn-success btn-editable'
+                  className='btn btn-success btn-editable ma1'
                   type='button'> Save </button>
           <button onClick={() => this.disableEdit() }
-                  className='btn btn-warning btn-editable'
+                  className='btn btn-warning btn-editable ma1'
                   type='button'> Close </button>
         </React.Fragment>
       )
@@ -29,7 +29,7 @@ export class EditableText extends EditableComponent {
       <React.Fragment>
         <span className={className}> {value} </span>
         <button onClick={() => this.enableEdit() }
-                className='btn btn-warning btn-editable'
+                className='btn btn-warning btn-editable ma1'
                 type='button'> Edit </button>
       </React.Fragment>
     )

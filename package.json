@@ -48,6 +48,7 @@
     "redux-form": "^7.4.2",
     "redux-thunk": "^2.3.0",
     "stripe": "^6.28.0",
+    "tachyons": "^4.11.1",
     "titleize": "^1.0.1"
   },
   "scripts": {

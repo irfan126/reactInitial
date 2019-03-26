@@ -176,7 +176,7 @@ export class BwmFileUploadEdit extends React.Component {
         const { imageURL } = this.props;
     return (
 
-      <div className='img-upload-container'>
+      <div className='img-upload-container v-mid'>
 
         { imageBase64 &&
           <div className='img-preview-container'>
@@ -205,7 +205,7 @@ export class BwmFileUploadEdit extends React.Component {
 
         { !(status === 'OK') &&
         <label className='img-upload btn btn-bwm'>
-         <span className='upload-text'> Select an image </span>
+         <span className='upload-text ma1'> Select an image </span>
          <input type='file'
                 accept='.jpg, .png, .jpeg'
                 onChange={this.onChange}/>
@@ -213,7 +213,7 @@ export class BwmFileUploadEdit extends React.Component {
       }
         
         { selectedFile && 
-          <button className='btn btn-success btn-upload'
+          <button className='btn btn-success btn-upload ma1'
                   type='button'
                   disabled={!selectedFile}
                   onClick={() => this.uploadImage()}>
@@ -222,7 +222,7 @@ export class BwmFileUploadEdit extends React.Component {
           }
 
         {  !(imageURL === 'none') && !imageBase64 &&
-            <button className='btn btn-warning btn-upload'
+            <button className='btn btn-warning btn-upload ma1'
                     type='button'
                     onClick={()  => this.deleteImage(imageURL)}
                    > Delete Image

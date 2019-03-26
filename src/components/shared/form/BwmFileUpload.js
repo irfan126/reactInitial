@@ -55,7 +55,6 @@ export class BwmFileUpload extends React.Component {
 
   onChange(event) {
     const selectedFile = event.target.files[0];
-
     if (selectedFile) {
       this.setState({
         selectedFile,
@@ -63,6 +62,7 @@ export class BwmFileUpload extends React.Component {
       });
 
       this.reader.readAsDataURL(selectedFile);
+
     }
   }
 
@@ -194,7 +194,7 @@ export class BwmFileUpload extends React.Component {
             </div>
           </div>
         }
-
+<div className=''>
         { !(status === 'OK') &&
         <label className='img-upload btn btn-bwm'>
          <span className='upload-text'> Select an image </span>
@@ -215,19 +215,19 @@ export class BwmFileUpload extends React.Component {
 
         { selectedFile && 
             <button onClick={() => this.resetToDefaultState('INIT', '')}
-                  className='btn btn-warning btn-editable btn-editable-image'
+                  className='btn btn-warning btn-editable btn-editable-image ml2'
                   type='button'> Cancel
             </button>
         }
 
         {  (status === 'OK') &&
-            <button className='img-upload btn btn-bwm'
+            <button className='img-upload btn btn-bwm ml2'
                     type='button'
                     onClick={()  => this.deleteImage(displayUploadedImage)}
                    > Delete Image
             </button>
         }
-
+</div>
         {this.renderImageStatus()}
       </div>
     )

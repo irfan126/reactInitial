@@ -20,10 +20,10 @@ export class EditableSelect extends EditableComponent {
             {this.renderOptions(options)}
           </select>
           <button onClick={() => this.update() }
-                  className='btn btn-success btn-editable'
+                  className='btn btn-success btn-editable ma1'
                   type='button'> Save </button>
           <button onClick={() => this.disableEdit() }
-                  className='btn btn-warning btn-editable'
+                  className='btn btn-warning btn-editable ma1'
                   type='button'> Close </button>
         </React.Fragment>
       )
@@ -33,7 +33,7 @@ export class EditableSelect extends EditableComponent {
       <React.Fragment>
         <span className={className}> {`${value}`} </span>
         <button onClick={() => this.enableEdit() }
-                className='btn btn-warning btn-editable'
+                className='btn btn-warning btn-editable ma1'
                 type='button'> Edit </button>
       </React.Fragment>
     )

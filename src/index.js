@@ -9,6 +9,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-image-crop/dist/ReactCrop.css';
+import 'tachyons';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

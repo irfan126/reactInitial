@@ -30,14 +30,14 @@ export class EditableImage extends EditableComponent {
           { !(value === 'none') &&
 
                                     <div className='img-upload-container'>
-                          <div className='img-preview'
+                          <div className='img-preview ma0'
                                 style={{'backgroundImage': 'url(' + value + ')'}}>
                           </div>
                       </div>
               }
 <div>
             <button onClick={() => this.enableEdit() }
-                className='btn btn-warning btn-editable btn-editable-image'
+                className='btn btn-warning btn-editable btn-editable-image ma1'
                 type='button'> Edit
             </button>
 </div>
@@ -48,10 +48,10 @@ export class EditableImage extends EditableComponent {
         { isActive &&
           <React.Fragment>
 
-<div className='col'>
+<div className='col v-mid'>
 <div>
             <button onClick={() => this.disableEdit() }
-                  className='btn btn-warning btn-upload'
+                  className='btn btn-warning btn-upload ma1'
                   type='button'> Cancel
             </button>
 </div>
