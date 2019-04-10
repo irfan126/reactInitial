@@ -45,8 +45,9 @@ export class RentalManageCard extends React.Component {
             <Link className='btn btn-bwm' to={`/rentals/${rental._id}`}>Go to Rental</Link>
             { rental.bookings && rental.bookings.length > 0 && modal }
           </div>
+          {rental.adActive && <p>Active since: {pretifyDate(rental.adActiveDate)}</p>}
+          {!rental.adActive && <p>Deactive since: {pretifyDate(rental.adActiveDate)}</p>}
           <div className='card-footer text-muted'>
-            Created: {pretifyDate(rental.createdAt)}
             { !wantDelete &&
               <React.Fragment>
                 <button onClick={() => { this.showDeleteMenu() }} className='btn btn-danger'> Delete </button>

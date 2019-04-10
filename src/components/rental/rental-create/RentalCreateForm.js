@@ -108,11 +108,11 @@ const RentalCreateForm = props => {
       />
 <hr></hr>
 </div>
-</div>
+</div>      
+      <BwmResError errors={errors} />
       <button className='btn btn-bwm btn-form' type="submit" disabled={!valid || pristine || submitting}>
         Create Rental
       </button>
-      <BwmResError errors={errors} />
     </form>
 </div>
   )
@@ -120,5 +120,5 @@ const RentalCreateForm = props => {
 //https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365
 export default reduxForm({
   form: 'rentalCreateForm',
-  initialValues: { shared: false, category: 'apartment', image: 'none'}
+  initialValues: { shared: false, category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
 })(RentalCreateForm)

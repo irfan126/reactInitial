@@ -10,6 +10,7 @@ import { EditableInput } from '../../shared/editable/EditableInput';
 import { EditableText } from '../../shared/editable/EditableText';
 import { EditableSelect } from '../../shared/editable/EditableSelect';
 import { EditableImage } from '../../shared/editable/EditableImage';
+import { BwmResError } from '../../shared/form/BwmResError';
 
 import * as actions from 'actions';
 
@@ -79,6 +80,17 @@ class RentalUpdate extends React.Component {
             <div className='details-section'>
               <div className='col'>
                   <div className='rental'>
+<p className='mv0 blue'>Advert Active:</p>
+                    <label className={`rental-label rental-type ${rental.category}`}> Is advert active: </label>
+                    <EditableSelect entity={rental}
+                                    entityField={'adActive'}
+                                    className={`rental-type ${rental.category} v-mid`}
+                                    updateEntity={this.updateRental}
+                                    options={[true, false]}
+                                    containerStyle={{'display': 'inline-block'}}
+                                    errors={errors}
+                                    resetErrors={this.resetRentalErrors} />
+<hr className='mv2'></hr>
 
 <p className='mv0 blue'>Title:</p>
                     <EditableInput entity={rental}
@@ -139,6 +151,7 @@ class RentalUpdate extends React.Component {
 <hr className='mv2'></hr>
 
 <p className='mv0 blue'>Address:</p>
+      <BwmResError errors={errors} />
 <p className='mv0 f6 blue'>City:</p>
                     <EditableInput entity={rental}
                                    entityField={'city'}

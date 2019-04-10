@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Rental = require('../models/rental');
 const User = require('../models/user');
+const NodeGeocoder = require('node-geocoder');
 const { normalizeErrors } = require('../helpers/mongoose');
 
 const UserCtrl = require('../controllers/user');
@@ -16,7 +17,8 @@ router.get('/filter', function(req, res) {
   console.log(req.query);
   const query = category ? {category: category.toLowerCase()} : {};
 
-  Rental.find(query)
+  Rental.where({adActive: true})
+      .find(query)
       .select('-bookings')
       .exec(function(err, foundRentals) {
 
@@ -88,28 +90,51 @@ router.patch('/:id', UserCtrl.authMiddleware, function(req, res) {
 
   const rentalData = req.body;
   const user = res.locals.user;
+console.log(rentalData);
+
+const options = {
+                  provider: 'google',
+                   // Optional depending on the providers
+                  httpAdapter: 'https', // Default
+                  apiKey: 'AIzaSyDW9tFSqG2mA0ym2NluRBVGZ6tPr8xbwRM', // for Mapquest, OpenCage, Google Premier
+                  formatter: null         // 'gpx', 'string', ...
+    };
+
+  const geocoder = NodeGeocoder(options);
 
   Rental
     .findById(req.params.id)
-    .populate('user')
+    .populate('user', '-password -passwordActive -PasswordTry -resetPasswordToken -activationToken -accActivation -rentals -bookings -username -email -password -activationTokenExpires -resetPasswordExpires')
     .exec(function(err, foundRental) {
 
-      if (err) {
-        return res.status(422).send({errors: normalizeErrors(err.errors)});
-      }
+      if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
 
-      if (foundRental.user.id !== user.id) {
-        return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});
-      }
+      if (foundRental.user.id !== user.id) { return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]}); }
 
+      if (rentalData['adActive']) { rentalData['adActiveDate'] = Date.now();}
       foundRental.set(rentalData);
-      foundRental.save(function(err) {
-        if (err) {
-          return res.status(422).send({errors: normalizeErrors(err.errors)});
-        }
+      if (rentalData['city'] || rentalData['street']) { 
+            geocoder.geocode(`${foundRental.street}, ${foundRental.city} `, function(err, value){
+                  if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                  if (value) {
+                            if(!value.length > 0) { return res.status(422).send({errors: [{title: 'Location Error!', detail: 'Please enter a valid address!'}]});}
+                             rentalData['latitude'] = value[0].latitude;
+                             rentalData['longitude'] =value[0].longitude;
 
-        return res.status(200).send(foundRental);
-      });
+                             foundRental.set(rentalData);
+                             console.log(foundRental);
+                             foundRental.save(function(err) {
+                                      if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
+                                      return res.status(200).send(foundRental);
+                              });
+                        }
+                });
+        } else {
+                 foundRental.save(function(err) {
+                     if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
+                    return res.status(200).send(foundRental);
+                  });
+        }
     });
 });
 
@@ -150,20 +175,35 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
 
 router.post('', UserCtrl.authMiddleware, function(req, res) {
   const { title, city, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate } = req.body;
-  const user = res.locals.user;
+ 
+  const options = {
+                  provider: 'google',
+                   // Optional depending on the providers
+                  httpAdapter: 'https', // Default
+                  apiKey: 'AIzaSyDW9tFSqG2mA0ym2NluRBVGZ6tPr8xbwRM', // for Mapquest, OpenCage, Google Premier
+                  formatter: null         // 'gpx', 'string', ...
+    };
 
-  const rental = new Rental({title, city, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate});
-  rental.user = user;
+  const geocoder = NodeGeocoder(options);
 
-  Rental.create(rental, function(err, newRental) {
-    if (err) {
-      return res.status(422).send({errors: normalizeErrors(err.errors)});
-    }
+  geocoder.geocode(`${street}, ${city} `, function(err, value){
+      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+      if (value) {
+                if(!value.length > 0) { return res.status(422).send({errors: [{title: 'Location Error!', detail: 'Please enter a valid address!'}]});}
+                const latitude = value[0].latitude;
+                const longitude =value[0].longitude;
+                const user = res.locals.user;
 
-    User.update({_id: user.id}, { $push: {rentals: newRental}}, function(){});
+                const rental = new Rental({title, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate});
+                rental.user = user;
 
-    return res.json(newRental);
-  }); 
+                Rental.create(rental, function(err, newRental) {
+                      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                      User.update({_id: user.id}, { $push: {rentals: newRental}}, function(){});
+                        return res.json(newRental);
+              }); 
+        }
+  });
 });
 
 router.get('', function(req, res) {
@@ -172,7 +212,8 @@ router.get('', function(req, res) {
      console.log(req.query);
   const query = city ? {city: city.toLowerCase()} : {};
 
-  Rental.find(query)
+  Rental.where({adActive: true})
+      .find(query)
       .select('-bookings')
       .exec(function(err, foundRentals) {
 
