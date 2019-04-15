@@ -7,6 +7,16 @@ const { normalizeErrors } = require('../helpers/mongoose');
 
 const UserCtrl = require('../controllers/user');
 
+
+const aws = require('aws-sdk');
+const config = require('../config');
+aws.config.update({
+  secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: config.AWS_ACCESS_KEY_ID,
+  region: 'us-east-2'
+});
+const s3 = new aws.S3();
+
 router.get('/secret', UserCtrl.authMiddleware, function(req, res) {
   res.json({"secret": true});
 });
@@ -113,16 +123,17 @@ const options = {
 
       if (rentalData['adActive']) { rentalData['adActiveDate'] = Date.now();}
       foundRental.set(rentalData);
-      if (rentalData['city'] || rentalData['street']) { 
-            geocoder.geocode(`${foundRental.street}, ${foundRental.city} `, function(err, value){
+      if (rentalData['postcode'] || rentalData['street']) { 
+            geocoder.geocode(`${foundRental.street}, ${foundRental.postcode} `, function(err, value){
                   if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
-                  if (value) {
+                  if (value) { console.log(value);
                             if(!value.length > 0) { return res.status(422).send({errors: [{title: 'Location Error!', detail: 'Please enter a valid address!'}]});}
                              rentalData['latitude'] = value[0].latitude;
                              rentalData['longitude'] =value[0].longitude;
+                             rentalData['city'] =value[0].city;
 
                              foundRental.set(rentalData);
-                             console.log(foundRental);
+                             //console.log(foundRental);
                              foundRental.save(function(err) {
                                       if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
                                       return res.status(200).send(foundRental);
@@ -151,30 +162,38 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
     })
     .exec(function(err, foundRental) {
 
-    if (err) {
-      return res.status(422).send({errors: normalizeErrors(err.errors)});
-    }
+    if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
 
-    if (user.id !== foundRental.user.id) {
-      return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});
-    }
+    if (user.id !== foundRental.user.id) {return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});}
 
-    if (foundRental.bookings.length > 0) {
-      return res.status(422).send({errors: [{title: 'Active Bookings!', detail: 'Cannot delete rental with active bookings!'}]});
-    }
+    if (foundRental.bookings.length > 0) {return res.status(422).send({errors: [{title: 'Active Bookings!', detail: 'Cannot delete rental with active bookings!'}]});}
 
     foundRental.remove(function(err) {
-      if (err) {
-        return res.status(422).send({errors: normalizeErrors(err.errors)});
-      }
+      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
 
-      return res.json({'status': 'deleted'});
+        var s3Files = [];
+        function s3Key(link){ var fileName = link.split('/').slice(-1)[0];
+                              return fileName;
+                            }
+        if (foundRental.image1 !== 'none') {s3Files.push({Key : s3Key(foundRental.image1)});}
+        if (foundRental.image2 !== 'none') {s3Files.push({Key : s3Key(foundRental.image2)});}
+        if (foundRental.image3 !== 'none') {s3Files.push({Key : s3Key(foundRental.image3)});}
+        if (foundRental.image4 !== 'none') {s3Files.push({Key : s3Key(foundRental.image4)});}
+        if (foundRental.image5 !== 'none') {s3Files.push({Key : s3Key(foundRental.image5)});}
+        if (s3Files.length > 0){
+                          var params = {Bucket: 'bwm-image-dev', Delete: {Objects: s3Files, Quiet: false}};
+                          s3.deleteObjects(params, function(err, data) {
+                              if (err) {return res.status(422).send({errors: [{title: 'Delete Image Error', detail: err.message}]});}
+                                 return res.json({'status': 'deleted and Images deleted'});
+                              });
+                        } 
+          else {return res.json({'status': 'deleted'}); }
     });
   });
 });
 
 router.post('', UserCtrl.authMiddleware, function(req, res) {
-  const { title, city, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate } = req.body;
+  const { title, postcode, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate, emailContact, phone, weblink } = req.body;
  
   const options = {
                   provider: 'google',
@@ -186,15 +205,16 @@ router.post('', UserCtrl.authMiddleware, function(req, res) {
 
   const geocoder = NodeGeocoder(options);
 
-  geocoder.geocode(`${street}, ${city} `, function(err, value){
+  geocoder.geocode(`${street}, ${postcode} `, function(err, value){
       if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
       if (value) {
                 if(!value.length > 0) { return res.status(422).send({errors: [{title: 'Location Error!', detail: 'Please enter a valid address!'}]});}
                 const latitude = value[0].latitude;
                 const longitude =value[0].longitude;
+                const city =value[0].city;
                 const user = res.locals.user;
 
-                const rental = new Rental({title, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate});
+                const rental = new Rental({title, postcode, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate, emailContact, phone, weblink});
                 rental.user = user;
 
                 Rental.create(rental, function(err, newRental) {
@@ -207,13 +227,23 @@ router.post('', UserCtrl.authMiddleware, function(req, res) {
 });
 
 router.get('', function(req, res) {
-  const city = req.query.city;
-     console.log('searchInput');
-     console.log(req.query);
-  const query = city ? {city: city.toLowerCase()} : {};
 
+const city = req.query.city;
+     console.log('searchInput');
+     console.log(req.query);  
+var query = {};
+
+if (city){ 
+    var andArray = [];
+    var searchTerms = city.split(" ");
+         searchTerms.forEach(function(searchTerm) {
+         andArray.push( {city: { $regex: searchTerm, $options:'i' }}, { title: { $regex: searchTerm, $options:'i' }}  );
+          });
+        query = andArray;
+        }
+        
   Rental.where({adActive: true})
-      .find(query)
+      .find().or(query)
       .select('-bookings')
       .exec(function(err, foundRentals) {
 

@@ -28,18 +28,18 @@ const RentalCreateForm = props => {
         rows='6'
         className='form-control'
         component={BwmTextArea}
-      />
-      <Field
-        name="city"
-        type="text"
-        label='City'
-        className='form-control'
-        component={BwmInput}
-      />
+      />      
       <Field
         name="street"
         type="text"
         label='Street'
+        className='form-control'
+        component={BwmInput}
+      />
+      <Field
+        name="postcode"
+        type="text"
+        label='Postcode'
         className='form-control'
         component={BwmInput}
       />
@@ -70,6 +70,30 @@ const RentalCreateForm = props => {
         name="shared"
         type="checkbox"
         label='Shared'
+        className='form-control'
+        component={BwmInput}
+      />
+      <hr></hr>
+<p>Contact details:</p>
+      <Field
+        name="emailContact"
+        type="email"
+        label='Email'
+        className='form-control'
+        component={BwmInput}
+      />
+      <Field
+        name="phone"
+        type="number"
+        pattern="[0-9]*" 
+        label='Contact telephone number'
+        className='form-control'
+        component={BwmInput}
+      />
+      <Field
+        name="weblink"
+        type="string"
+        label='Weblink'
         className='form-control'
         component={BwmInput}
       />
@@ -118,7 +142,21 @@ const RentalCreateForm = props => {
   )
 }
 //https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365
+
+const validate = values => {
+  const errors = {};
+
+  if (!values.emailContact) {
+    errors.emailContact = 'Please enter a contact email address!';
+  }
+
+
+  return errors;
+}
+
+
 export default reduxForm({
   form: 'rentalCreateForm',
-  initialValues: { shared: false, category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
+  validate,
+  initialValues: {shared: false, category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
 })(RentalCreateForm)

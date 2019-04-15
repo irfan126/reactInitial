@@ -20,7 +20,6 @@ export class RentalCreate extends React.Component {
   }
 
   createRental(rentalData) {
-    debugger;
     actions.createRental(rentalData).then(
       (rental) => this.setState({redirect: true}),
       (errors) => this.setState({errors}))

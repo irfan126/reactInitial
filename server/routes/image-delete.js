@@ -36,7 +36,7 @@ router.post('/image-delete', UserCtrl.authMiddleware, function(req, res) {
 
 	s3.deleteObjects(params, function(err, data) {
 		if (err) {
-      			return res.status(422).send({errors: [{title: 'Image Upload Error', detail: err.message}]});
+      			return res.status(422).send({errors: [{title: 'Delete Image Error', detail: err.message}]});
     			}
     	 return res.json({message: 'Images Deleted'});
   	});

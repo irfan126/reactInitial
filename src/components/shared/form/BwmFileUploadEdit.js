@@ -203,7 +203,7 @@ export class BwmFileUploadEdit extends React.Component {
           </div>
         }
 
-        { !(status === 'OK') &&
+        { !(status === 'OK') && (imageURL === 'none') &&
         <label className='btn btn-bwm ma1'>
          <span className='upload-text ma1'> Select an image </span>
          <input type='file'

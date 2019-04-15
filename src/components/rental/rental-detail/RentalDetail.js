@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RentalDetailInfo } from './RentalDetailInfo';
 import RentalMap from './RentalMap';
-import Booking from 'components/booking/Booking';
+//import Booking from 'components/booking/Booking';
+import ContactDetails from 'components/contact-details/ContactDetails';
 
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
@@ -50,7 +51,7 @@ class RentalDetail extends React.Component {
             </Carousel>
               </div>
               <div className='col-md-6'>
-                <RentalMap location={`${rental.city}, ${rental.street}`} />
+                <RentalMap location={`${rental.postcode}, ${rental.street}`} />
               </div>
             </div>
           </div>
@@ -61,7 +62,9 @@ class RentalDetail extends React.Component {
                 <RentalDetailInfo rental={rental} />
               </div>
               <div className='col-md-4'>
-                <Booking rental={rental} />
+
+               {/* <Booking rental={rental} />*/}
+                <ContactDetails rental={rental} />
              </div>
             </div>
           </div>
