@@ -243,6 +243,14 @@ export const passwordReset = (userData) => {
   )
 }
 
+export const contactUsRequest = (userData) => {
+  console.log(userData);
+  return axios.post('/api/v1/users/contactUsRequest', userData).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
 export const resetPassword = (resetPasswordToken) => {
   return axios.post('/api/v1/users/resetPassword', { params: {resetPasswordToken}}).then(
     res => res.data,

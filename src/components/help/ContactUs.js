@@ -1,10 +1,11 @@
 import React from 'react';
-import PasswordResetForm from './PasswordResetForm';
+import ContactUsForm from './ContactUsForm';
 import { Redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import * as actions from 'actions';
 
-export class PasswordReset extends React.Component {
+export class ContactUs extends React.Component {
 
   constructor() {
     super();
@@ -14,12 +15,13 @@ export class PasswordReset extends React.Component {
       redirect: false
     }
 
-    this.userPasswordReset = this.userPasswordReset.bind(this);
+    this.contactUsRequest = this.contactUsRequest.bind(this);
   }
 
-  userPasswordReset(userData) {
-    actions.passwordReset(userData).then(
-      passwordResetSuccess => this.setState({redirect: true}),
+  contactUsRequest(userData) {
+    actions.contactUsRequest(userData).then(
+      contactUsSuccess => {toast.success(' We have received your question. We will respond as soon as possible')
+      this.setState({redirect: true});},
       errors => this.setState({errors})
     );
   }
@@ -29,18 +31,18 @@ export class PasswordReset extends React.Component {
     const { redirect } = this.state;
 
     if (redirect) {
-      return <Redirect to={{pathname: '/login', state: { successPasswordReset: true }}} />
+      return <Redirect to={{pathname: '/rentals'}} />
     }
 
     return (
-      <section id='passwordReset'>
+      <section id='contactUs'>
         <div className='bwm-form'>
           <div className='row'>
             <div className='col-md-5'>
-              <h1>Reset your password</h1>
+              <h1>Contact Us</h1>
 
-              <p>Please enter the Email address you registered with!</p>
-              <PasswordResetForm submitCb={this.userPasswordReset} errors={errors} />
+              <p>Please enter your email address and question. We will respond as soon as possible!</p>
+              <ContactUsForm submitCb={this.contactUsRequest} errors={errors} />
             </div>
             <div className='col-md-6 ml-auto'>
               <div className='image-container'>

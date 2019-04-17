@@ -14,6 +14,8 @@ router.post('/activateAcc', User.activateAcc);
 
 router.post('/passwordReset', User.passwordReset);
 
+router.post('/contactUsRequest', User.contactUsRequest);
+
 router.post('/resetPassword', User.resetPassword);
 
 router.post('/updatePassword', User.updatePassword);

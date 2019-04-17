@@ -133,7 +133,7 @@ const options = {
                              rentalData['city'] =value[0].city;
 
                              foundRental.set(rentalData);
-                             //console.log(foundRental);
+                            // console.log(foundRental);
                              foundRental.save(function(err) {
                                       if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
                                       return res.status(200).send(foundRental);
@@ -142,6 +142,7 @@ const options = {
                 });
         } else {
                  foundRental.save(function(err) {
+                   //console.log(foundRental);
                      if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
                     return res.status(200).send(foundRental);
                   });
@@ -193,8 +194,8 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
 });
 
 router.post('', UserCtrl.authMiddleware, function(req, res) {
-  const { title, postcode, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate, emailContact, phone, weblink } = req.body;
- 
+  const { title, postcode, street, category, image1, image2, image3, image4, image5, description, dailyRate, emailContact, phone, weblink } = req.body;
+ console.log(phone);
   const options = {
                   provider: 'google',
                    // Optional depending on the providers
@@ -214,7 +215,7 @@ router.post('', UserCtrl.authMiddleware, function(req, res) {
                 const city =value[0].city;
                 const user = res.locals.user;
 
-                const rental = new Rental({title, postcode, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate, emailContact, phone, weblink});
+                const rental = new Rental({title, postcode, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, description, dailyRate, emailContact, phone, weblink});
                 rental.user = user;
 
                 Rental.create(rental, function(err, newRental) {

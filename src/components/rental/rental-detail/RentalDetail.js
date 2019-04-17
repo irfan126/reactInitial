@@ -50,7 +50,7 @@ class RentalDetail extends React.Component {
                 </div>
             </Carousel>
               </div>
-              <div className='col-md-6'>
+              <div className='col-md-6 mv1'>
                 <RentalMap location={`${rental.postcode}, ${rental.street}`} />
               </div>
             </div>
@@ -61,7 +61,7 @@ class RentalDetail extends React.Component {
               <div className='col-md-8'>
                 <RentalDetailInfo rental={rental} />
               </div>
-              <div className='col-md-4'>
+              <div className='col-md-4 mb3'>
 
                {/* <Booking rental={rental} />*/}
                 <ContactDetails rental={rental} />

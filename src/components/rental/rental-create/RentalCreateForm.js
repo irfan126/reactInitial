@@ -52,13 +52,6 @@ const RentalCreateForm = props => {
       />
 
       <Field
-        name="bedrooms"
-        type="number"
-        label='Bedrooms'
-        className='form-control'
-        component={BwmInput}
-      />
-      <Field
         name="dailyRate"
         type="text"
         label='Daily Rate'
@@ -66,13 +59,7 @@ const RentalCreateForm = props => {
         symbol='$'
         component={BwmInput}
       />
-      <Field
-        name="shared"
-        type="checkbox"
-        label='Shared'
-        className='form-control'
-        component={BwmInput}
-      />
+
       <hr></hr>
 <p>Contact details:</p>
       <Field
@@ -134,7 +121,7 @@ const RentalCreateForm = props => {
 </div>
 </div>      
       <BwmResError errors={errors} />
-      <button className='btn btn-bwm btn-form' type="submit" disabled={!valid || pristine || submitting}>
+      <button className='btn btn-bwm btn-form mv1' type="submit" disabled={!valid || pristine || submitting}>
         Create Rental
       </button>
     </form>
@@ -158,5 +145,5 @@ const validate = values => {
 export default reduxForm({
   form: 'rentalCreateForm',
   validate,
-  initialValues: {shared: false, category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
+  initialValues: {category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
 })(RentalCreateForm)

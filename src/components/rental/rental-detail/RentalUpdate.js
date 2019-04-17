@@ -120,25 +120,6 @@ class RentalUpdate extends React.Component {
                                     resetErrors={this.resetRentalErrors} />
 <hr className='mv2'></hr>
 
-<p className='mv0 blue'>Shared:</p>
-                    <EditableSelect entity={rental}
-                                    entityField={'shared'}
-                                    className={`rental-type ${rental.category} v-mid`}
-                                    updateEntity={this.updateRental}
-                                    options={[true, false]}
-                                    errors={errors}
-                                    resetErrors={this.resetRentalErrors} />
-<hr className='mv2'></hr>
-
-<p className='mv0 blue'>Bedrooms:</p>
-                        <EditableInput entity={rental}
-                                   entityField={'bedrooms'}
-                                   className={'rental-bedrooms v-mid'}
-                                   updateEntity={this.updateRental}
-                                   errors={errors}
-                                   resetErrors={this.resetRentalErrors}  /> 
-<hr className='mv2'></hr>
-
 <p className='mv0 blue'>Address:</p>
 <BwmResError errors={errors} />
                             <p className='mv0 f6 blue'>Street:</p>

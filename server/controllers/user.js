@@ -333,6 +333,39 @@ exports.updatePassword =  function(req, res) {
   })
 }
 
+exports.contactUsRequest =  function(req, res) {
+
+  const { email, question } = req.body;
+  if (!email || !question) {return res.status(422).send({errors: [{title: 'Data missing!', detail: 'Provide an email and question!'}]});}
+
+    const transporter = nodeMailer.createTransport({
+            service: 'gmail',
+                auth: {
+              user: `${config.GMAIL_USERNAME}`,
+              pass: `${config.GMAIL_PASSWORD}`,
+            },
+        });
+
+        const mailOptions = {
+          from: `${config.GMAIL_USERNAME}`,
+          //to: `${email}`,
+          to: 'irfan126@gmail.com',
+          subject: 'Question',
+          text:
+            'Question need a response.\n\n'
+            + `Question from email: ${email}\n\n`
+            + `Question: ${question}.\n`,
+        };
+
+        transporter.sendMail(mailOptions, (err, response) => {
+          if (err) {
+                  return res.status(422).send({errors: normalizeErrors(err.errors)});
+          } else {
+                  return res.json({'Question Submitted': true});
+                }
+        });
+}
+
 exports.passwordReset =  function(req, res) {
   const { email } = req.body;
   if (!email) {return res.status(422).send({errors: [{title: 'Data missing!', detail: 'Provide an email!'}]});}
