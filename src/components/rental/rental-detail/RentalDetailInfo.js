@@ -13,7 +13,8 @@ export function RentalDetailInfo(props) {
           <span>{rental.user && rental.user.username}</span>
         </div>
         <h1 className='rental-title'>{rental.title}</h1>       
-        <h3 className='booking-price'>$ {rental.dailyRate} <span className='booking-per-night'>per night</span></h3>
+        <h3 className='booking-price'>£{rental.dailyRate} 
+        {!(rental.perRate === 'blank') && <span className='booking-per-night'> {rental.perRate}</span>}</h3>
         <hr></hr>
         <p className='rental-description'>
           {rental.description}

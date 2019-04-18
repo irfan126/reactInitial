@@ -99,6 +99,27 @@ class RentalUpdate extends React.Component {
                                    resetErrors={this.resetRentalErrors}  />
 <hr className='mv2'></hr>
 
+<p className='mv0 blue'>Price:</p>
+                    <EditableInput entity={rental}
+                                    entityField={'dailyRate'}
+        type="number"
+        pattern="[0-9]*" 
+                                    className={`rental-type ${rental.dailyRate} v-mid`}
+                                    updateEntity={this.updateRental}
+                                    errors={errors}
+                                    resetErrors={this.resetRentalErrors} />
+<hr className='mv2'></hr>
+
+<p className='mv0 blue'>Rate:</p>
+                    <EditableSelect entity={rental}
+                                    entityField={'perRate'}
+                                    className={`rental-type ${rental.perRate} v-mid`}
+                                    updateEntity={this.updateRental}
+                                    options={['Blank', 'per hour', 'per day']}
+                                    errors={errors}
+                                    resetErrors={this.resetRentalErrors} />
+<hr className='mv2'></hr>
+
 <p className='mv0 blue'>Description:</p>
                     <EditableText  entity={rental}
                                    entityField={'description'}

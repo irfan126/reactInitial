@@ -8,7 +8,7 @@ import { BwmResError } from 'components/shared/form/BwmResError';
 // import { required, minLength4 } from 'components/shared/form/validators';
 
 const RentalCreateForm = props => {
-  const { handleSubmit, pristine, submitting, submitCb, valid, options, errors } = props
+  const { handleSubmit, pristine, submitting, submitCb, valid, options, options1, errors } = props
   return (
 <div className='pb3'>
     <form onSubmit={handleSubmit(submitCb)}>
@@ -53,11 +53,19 @@ const RentalCreateForm = props => {
 
       <Field
         name="dailyRate"
-        type="text"
-        label='Daily Rate'
+        type="number"
+        pattern="[0-9]*" 
+        label='Price'
         className='form-control'
-        symbol='$'
+        symbol='£'
         component={BwmInput}
+      />      
+      <Field
+        options={options1}
+        name="perRate"
+        label='Rate'
+        className='form-control'
+        component={BwmSelect}
       />
 
       <hr></hr>
@@ -145,5 +153,5 @@ const validate = values => {
 export default reduxForm({
   form: 'rentalCreateForm',
   validate,
-  initialValues: {category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
+  initialValues: {perRate: 'per Day',category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
 })(RentalCreateForm)

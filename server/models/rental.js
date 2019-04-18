@@ -18,6 +18,7 @@ const rentalSchema = new Schema({
   adActiveDate: {type: Date, default: Date.now},
   description: { type: String, required: true },
   dailyRate: Number,
+  perRate: { type: String, lowercase: true },
   createdAt: { type: Date, default: Date.now },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],

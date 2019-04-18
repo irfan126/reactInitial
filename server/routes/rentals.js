@@ -194,7 +194,7 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
 });
 
 router.post('', UserCtrl.authMiddleware, function(req, res) {
-  const { title, postcode, street, category, image1, image2, image3, image4, image5, description, dailyRate, emailContact, phone, weblink } = req.body;
+  const { title, postcode, street, category, image1, image2, image3, image4, image5, description, dailyRate, perRate, emailContact, phone, weblink } = req.body;
  console.log(phone);
   const options = {
                   provider: 'google',
@@ -215,7 +215,7 @@ router.post('', UserCtrl.authMiddleware, function(req, res) {
                 const city =value[0].city;
                 const user = res.locals.user;
 
-                const rental = new Rental({title, postcode, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, description, dailyRate, emailContact, phone, weblink});
+                const rental = new Rental({title, postcode, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, description, dailyRate, perRate, emailContact, phone, weblink});
                 rental.user = user;
 
                 Rental.create(rental, function(err, newRental) {

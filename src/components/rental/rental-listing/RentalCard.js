@@ -17,7 +17,8 @@ export function RentalCard(props) {
           <div className='card-block ma1'>
             <h6 className={`card-subtitle ${rental.category}`}>{rental.category} &#183; {rental.city}</h6>
             <h4 className='card-title'>{rental.title}</h4>
-            <p className='card-text'>${rental.dailyRate} per Night &#183; Free Cancelation</p>
+            <p className='card-text'>£{rental.dailyRate} 
+        {!(rental.perRate === 'blank') && <span className='booking-per-night'> {rental.perRate}</span>}</p>
           </div>
         </div>
       </Link>
