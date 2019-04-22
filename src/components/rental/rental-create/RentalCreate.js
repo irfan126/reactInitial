@@ -15,12 +15,12 @@ export class RentalCreate extends React.Component {
     }
 
     this.rentalCateogies = ['apartment', 'house', 'condo'];
+    this.rentalPerRate = ['Blank', 'per Hour', 'per Day'];
    // this.noImageLink = "https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553026864391";
     this.createRental = this.createRental.bind(this);
   }
 
   createRental(rentalData) {
-    debugger;
     actions.createRental(rentalData).then(
       (rental) => this.setState({redirect: true}),
       (errors) => this.setState({errors}))
@@ -38,6 +38,7 @@ export class RentalCreate extends React.Component {
               <h1 className='page-title'>Create Rental</h1>
               <RentalCreateForm submitCb={this.createRental}
                                 options={this.rentalCateogies}
+                                options1={this.rentalPerRate}
                                 errors={this.state.errors}/>
           </div>
         </div>

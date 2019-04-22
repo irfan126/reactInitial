@@ -24,7 +24,6 @@ class RentalMap extends React.Component {
         isReloading={isReloading}
         mapLoaded={() => this.reloadMapFinish()}
       />
-
 </div>
     )
   }

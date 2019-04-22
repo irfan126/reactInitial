@@ -5,7 +5,7 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Circle,
+  Marker,
   InfoWindow
 } from "react-google-maps";
 
@@ -18,8 +18,8 @@ function MapComponent(props) {
         defaultCenter={coordinates}
         center={coordinates}
         options={{disableDefaultUI: isError ? true : false}}
-      >
-      {isLocationLoaded && !isError && <Circle center={coordinates} radius={500} />}
+      >        
+      {isLocationLoaded && !isError && <Marker position={coordinates}/>}
       {isLocationLoaded && isError &&
        <InfoWindow position={coordinates} options={{maxWidth: 300}}>
         <div>

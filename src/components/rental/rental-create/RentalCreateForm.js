@@ -8,7 +8,7 @@ import { BwmResError } from 'components/shared/form/BwmResError';
 // import { required, minLength4 } from 'components/shared/form/validators';
 
 const RentalCreateForm = props => {
-  const { handleSubmit, pristine, submitting, submitCb, valid, options, errors } = props
+  const { handleSubmit, pristine, submitting, submitCb, valid, options, options1, errors } = props
   return (
 <div className='pb3'>
     <form onSubmit={handleSubmit(submitCb)}>
@@ -28,18 +28,18 @@ const RentalCreateForm = props => {
         rows='6'
         className='form-control'
         component={BwmTextArea}
-      />
-      <Field
-        name="city"
-        type="text"
-        label='City'
-        className='form-control'
-        component={BwmInput}
-      />
+      />      
       <Field
         name="street"
         type="text"
         label='Street'
+        className='form-control'
+        component={BwmInput}
+      />
+      <Field
+        name="postcode"
+        type="text"
+        label='Postcode'
         className='form-control'
         component={BwmInput}
       />
@@ -52,24 +52,43 @@ const RentalCreateForm = props => {
       />
 
       <Field
-        name="bedrooms"
-        type="number"
-        label='Bedrooms'
-        className='form-control'
-        component={BwmInput}
-      />
-      <Field
         name="dailyRate"
-        type="text"
-        label='Daily Rate'
+        type="number"
+        pattern="[0-9]*" 
+        label='Price'
         className='form-control'
-        symbol='$'
+        symbol='£'
+        component={BwmInput}
+      />      
+      <Field
+        options={options1}
+        name="perRate"
+        label='Rate'
+        className='form-control'
+        component={BwmSelect}
+      />
+
+      <hr></hr>
+<p>Contact details:</p>
+      <Field
+        name="emailContact"
+        type="email"
+        label='Email'
+        className='form-control'
         component={BwmInput}
       />
       <Field
-        name="shared"
-        type="checkbox"
-        label='Shared'
+        name="phone"
+        type="number"
+        pattern="[0-9]*" 
+        label='Contact telephone number'
+        className='form-control'
+        component={BwmInput}
+      />
+      <Field
+        name="weblink"
+        type="string"
+        label='Weblink'
         className='form-control'
         component={BwmInput}
       />
@@ -108,17 +127,31 @@ const RentalCreateForm = props => {
       />
 <hr></hr>
 </div>
-</div>
-      <button className='btn btn-bwm btn-form' type="submit" disabled={!valid || pristine || submitting}>
+</div>      
+      <BwmResError errors={errors} />
+      <button className='btn btn-bwm btn-form mv1' type="submit" disabled={!valid || pristine || submitting}>
         Create Rental
       </button>
-      <BwmResError errors={errors} />
     </form>
 </div>
   )
 }
 //https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365
+
+const validate = values => {
+  const errors = {};
+
+  if (!values.emailContact) {
+    errors.emailContact = 'Please enter a contact email address!';
+  }
+
+
+  return errors;
+}
+
+
 export default reduxForm({
   form: 'rentalCreateForm',
-  initialValues: { shared: false, category: 'apartment', image: 'none'}
+  validate,
+  initialValues: {perRate: 'per Day',category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
 })(RentalCreateForm)

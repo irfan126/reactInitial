@@ -46,16 +46,21 @@ const RegisterForm = props => {
 const validate = values => {
   const errors = {};
 
-  if (values.username && values.username.length < 4) {
+    if (values.username && values.username.length < 4) {
     errors.username = 'Username min length is 4 characters!';
   }
 
   if (!values.email) {
     errors.email = 'Please enter email!';
   }
+ // const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,32})");
+  const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,32})");
+  if (!(re.test(values.password))) {
+     errors.password = 'Your password has to be alphanumeric with a Capital letter and a minimum of 8 Characters';
+  }
 
-  if (!values.passwordConfirmation) {
-    errors.passwordConfirmation = 'Please enter password confirmation!';
+  if (!values.passwordConfirmation || !values.password) {
+    errors.passwordConfirmation = 'Please enter password and password confirmation!';
   }
 
   if (values.password !== values.passwordConfirmation) {

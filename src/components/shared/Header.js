@@ -18,13 +18,21 @@ class Header extends React.Component {
 
   renderAuthButtons(isAuth) {
     if (isAuth) {
-      return <a className='nav-item nav-link clickable' onClick={this.handleLogout}>Logout</a>
+      return(
+            <React.Fragment>
+                <a className='nav-item nav-link clickable' onClick={this.handleLogout}>Logout</a>
+                <Link className='nav-item nav-link' to='/aboutUs'>About Us</Link>
+                <Link className='nav-item nav-link' to='/contactUs'>Contact Us</Link>
+            </React.Fragment>
+            )
     }
 
     return (
         <React.Fragment>
           <Link className='nav-item nav-link' to='/login'>Login <span className='sr-only'>(current)</span></Link>
           <Link className='nav-item nav-link' to='/register'>Register</Link>
+          <Link className='nav-item nav-link' to='/aboutUs'>About Us</Link>
+          <Link className='nav-item nav-link' to='/contactUs'>Contact Us</Link>
         </React.Fragment>
       )
   }
@@ -39,7 +47,7 @@ class Header extends React.Component {
           <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <Link className="dropdown-item" to="/rentals/new">Create Rental</Link>
             <Link className="dropdown-item" to="/rentals/manage">Manage Rentals</Link>
-            <Link className="dropdown-item" to="/bookings/manage">Manage Bookings</Link>
+           {/*  <Link className="dropdown-item" to="/bookings/manage">Manage Bookings</Link>*/}
           </div>
         </div>
       )

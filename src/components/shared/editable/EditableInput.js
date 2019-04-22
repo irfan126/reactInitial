@@ -27,10 +27,10 @@ export class EditableInput extends EditableComponent {
                  value={value}
                  className={className} />
           <button onClick={() => this.update() }
-                  className='btn btn-success btn-editable ma1'
+                  className='btn btn-success btn-editable ma1 fr'
                   type='button'> Save </button>
           <button onClick={() => this.disableEdit() }
-                  className='btn btn-warning btn-editable ma1'
+                  className='btn btn-warning btn-editable ma1 fr'
                   type='button'> Close </button>
         </React.Fragment>
       )
@@ -38,9 +38,9 @@ export class EditableInput extends EditableComponent {
 
     return (
       <React.Fragment>
-        <span className={className}> {this.formatView(value)} </span>
+        <span className={`${className} ba b--white`}> {this.formatView(value)} </span>
         <button onClick={() => this.enableEdit() }
-                className='btn btn-warning btn-editable ma1'
+                className='btn btn-warning btn-editable ma1 fr'
                 type='button'> Edit </button>
       </React.Fragment>
     )

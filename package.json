@@ -2,8 +2,8 @@
   "name": "react-starter-bwm",
   "version": "0.1.0",
   "engines": {
-    "node": "8.11.1",
-    "npm": "5.6.0"
+    "node": "10.15.0",
+    "npm": "6.4.1"
   },
   "private": true,
   "proxy": {
@@ -21,7 +21,6 @@
     "camel-case": "^3.0.0",
     "express": "^4.16.4",
     "focus-trap-react": "^6.0.0",
-    "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",

@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import RentalMap from './RentalMap';
 
 import { UserGuard } from '../../shared/auth/UserGuard';
-import { RentalAssets } from './RentalAssets';
 import { toUpperCase } from 'helpers';
 
 import { EditableInput } from '../../shared/editable/EditableInput';
+import  EditableAddress  from '../../shared/editable/EditableAddress';
 import { EditableText } from '../../shared/editable/EditableText';
 import { EditableSelect } from '../../shared/editable/EditableSelect';
 import { EditableImage } from '../../shared/editable/EditableImage';
+import { BwmResError } from '../../shared/form/BwmResError';
 
 import * as actions from 'actions';
 
@@ -79,14 +80,44 @@ class RentalUpdate extends React.Component {
             <div className='details-section'>
               <div className='col'>
                   <div className='rental'>
+<p className='mv0 blue'>Is Advert Active:</p>
+                    <EditableSelect entity={rental}
+                                    entityField={'adActive'}
+                                    className={`rental-type ${rental.category} v-mid`}
+                                    updateEntity={this.updateRental}
+                                    options={[true, false]}
+                                    errors={errors}
+                                    resetErrors={this.resetRentalErrors} />
+<hr className='mv2'></hr>
 
 <p className='mv0 blue'>Title:</p>
                     <EditableInput entity={rental}
                                    entityField={'title'}
-                                   className={'rental-title v-mid f3'}
+                                   className={'v-mid'}
                                    updateEntity={this.updateRental}
                                    errors={errors}
                                    resetErrors={this.resetRentalErrors}  />
+<hr className='mv2'></hr>
+
+<p className='mv0 blue'>Price:</p>
+                    <EditableInput entity={rental}
+                                    entityField={'dailyRate'}
+        type="number"
+        pattern="[0-9]*" 
+                                    className={`rental-type ${rental.dailyRate} v-mid`}
+                                    updateEntity={this.updateRental}
+                                    errors={errors}
+                                    resetErrors={this.resetRentalErrors} />
+<hr className='mv2'></hr>
+
+<p className='mv0 blue'>Rate:</p>
+                    <EditableSelect entity={rental}
+                                    entityField={'perRate'}
+                                    className={`rental-type ${rental.perRate} v-mid`}
+                                    updateEntity={this.updateRental}
+                                    options={['Blank', 'per hour', 'per day']}
+                                    errors={errors}
+                                    resetErrors={this.resetRentalErrors} />
 <hr className='mv2'></hr>
 
 <p className='mv0 blue'>Description:</p>
@@ -110,65 +141,57 @@ class RentalUpdate extends React.Component {
                                     resetErrors={this.resetRentalErrors} />
 <hr className='mv2'></hr>
 
-<p className='mv0 blue'>Shared:</p>
-                    <label className={`rental-label rental-type ${rental.category}`}> Shared </label>
-                    <EditableSelect entity={rental}
-                                    entityField={'shared'}
-                                    className={`rental-type ${rental.category} v-mid`}
-                                    updateEntity={this.updateRental}
-                                    options={[true, false]}
-                                    containerStyle={{'display': 'inline-block'}}
-                                    errors={errors}
-                                    resetErrors={this.resetRentalErrors} />
-<hr className='mv2'></hr>
-
-<p className='mv0 blue'>Bedrooms:</p>
-                    <div className='rental-room-info'>
-                      <span><i className='fa fa-building'></i>
-                        <EditableInput entity={rental}
-                                   entityField={'bedrooms'}
-                                   className={'rental-bedrooms v-mid'}
-                                   containerStyle={{'display': 'inline-block'}}
-                                   updateEntity={this.updateRental}
-                                   errors={errors}
-                                   resetErrors={this.resetRentalErrors}  /> bedrooms</span>
-                      <span><i className='fa fa-user'></i> {rental.bedrooms + 4} guests</span>
-                      <span><i className='fa fa-bed'></i> {rental.bedrooms + 2} beds</span>
-                    </div>
-
-<hr className='mv2'></hr>
-
 <p className='mv0 blue'>Address:</p>
-<p className='mv0 f6 blue'>City:</p>
-                    <EditableInput entity={rental}
-                                   entityField={'city'}
-                                   className={'rental-city v-mid'}
-                                   updateEntity={this.updateRental}
-                                   errors={errors}
-                                   formatPipe={[toUpperCase]}
-                                   resetErrors={this.resetRentalErrors} />
-<p className='mv0 f6 blue'>Street:</p>
-                    <EditableInput entity={rental}
-                                   entityField={'street'}
-                                   className={'rental-street mv6 v-mid'}
-                                   updateEntity={this.updateRental}
-                                   errors={errors}
-                                   resetErrors={this.resetRentalErrors} />
+<BwmResError errors={errors} />
+                            <p className='mv0 f6 blue'>Street:</p>
+                            <h2 className='rental-city mt1'>{toUpperCase(rental.street)}</h2>
+
+                            <p className='mv0 f6 blue'>Postcode:</p>
+                            <h2 className='rental-city mt1'>{toUpperCase(rental.postcode)}</h2>
+
+                            <EditableAddress submitCb={this.updateRental}
+                            resetErrors={this.resetRentalErrors} />
+
 
 <hr className='mv2'></hr>
 
                 <div className='col-md-6'>
 
-                  <RentalMap location={`${rental.city}, ${rental.street}`} />
+                  <RentalMap location={`${rental.postcode}, ${rental.street}`} />
 
                 </div>
 
-                    <hr></hr>
-                    <RentalAssets />
-                  </div>
+<hr className='mv2'></hr>
+<p className='mv0 blue'>Contact Details:</p>
 
+<p className='mv0 f6 blue'>Contact Email:</p>
+
+                    <EditableInput entity={rental}
+                                   entityField={'emailContact'}
+                                   className={'rental-city mt1'}
+                                   updateEntity={this.updateRental}
+                                   errors={errors}
+                                   resetErrors={this.resetRentalErrors}  />
+
+<p className='mv0 f6 blue'>Contact telephone number:</p>
+                    <EditableInput entity={rental}
+                                   entityField={'phone'}
+                                   className={'rental-city mt1'}
+                                   updateEntity={this.updateRental}
+                                   errors={errors}
+                                   resetErrors={this.resetRentalErrors}  />
+
+<p className='mv0 f6 blue'>Weblink:</p>
+                    <EditableInput entity={rental}
+                                   entityField={'weblink'}
+                                   className={'rental-city mt1'}
+                                   updateEntity={this.updateRental}
+                                   errors={errors}
+                                   resetErrors={this.resetRentalErrors}  />
+                  </div>
               </div>
             </div>
+            <hr className='mv2'></hr>
 </div>
 
 <div className='col-md-6'>

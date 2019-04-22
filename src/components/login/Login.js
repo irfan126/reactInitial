@@ -1,13 +1,17 @@
 import React from 'react';
 import LoginForm from './LoginForm';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import * as actions from 'actions';
 
 class Login extends React.Component {
 
   constructor() {
     super();
+
+    this.state = {
+      displayAcitvationLink: false
+    }
 
     this.loginUser = this.loginUser.bind(this);
   }
@@ -17,8 +21,11 @@ class Login extends React.Component {
   }
 
   render() {
-    const { isAuth, errors } = this.props.auth;
+    const { isAuth, errors} = this.props.auth;
     const { successRegister } = this.props.location.state || false;
+    const { activeAccount } = this.props.location.state || false;
+    const { successPasswordReset } = this.props.location.state || false;
+
 
     if (isAuth) {
       return <Redirect to={{pathname: '/rentals'}} />
@@ -33,10 +40,23 @@ class Login extends React.Component {
               {
                 successRegister &&
                   <div className='alert alert-success'>
-                    <p> You have been succesfuly registered, please login now. </p>
+                    <p> To complete registration, please follow the activation link sent to your email address.  </p>
+                  </div>
+              }
+              {
+                activeAccount &&
+                  <div className='alert alert-success'>
+                    <p> Registration complete, please login with your credentials.  </p>
+                  </div>
+              }
+              {
+                successPasswordReset &&
+                  <div className='alert alert-success'>
+                    <p> Please follow the link sent to your email address to reset your password! </p>
                   </div>
               }
               <LoginForm submitCb={this.loginUser} errors={errors}/>
+              <Link className='btn btn-warning mv3' to={{pathname: `/passwordreset`}}> Reset my password! </Link>
             </div>
             <div className="col-md-6 ml-auto">
               <div className="image-container">

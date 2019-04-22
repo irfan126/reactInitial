@@ -222,6 +222,49 @@ export const register = (userData) => {
   )
 }
 
+export const activateAcc = (activationToken) => {
+  return axios.post('/api/v1/users/activateAcc', {params: {activationToken}}).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
+export const activateAccReset = (userData) => {
+  return axios.post('/api/v1/users/activateAccReset', userData).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
+export const passwordReset = (userData) => {
+  return axios.post('/api/v1/users/passwordReset', userData).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
+export const contactUsRequest = (userData) => {
+  console.log(userData);
+  return axios.post('/api/v1/users/contactUsRequest', userData).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
+export const resetPassword = (resetPasswordToken) => {
+  return axios.post('/api/v1/users/resetPassword', { params: {resetPasswordToken}}).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
+export const updatePassword = (userData) => {
+  return axios.post('/api/v1/users/updatePassword', userData).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
 export const checkAuthState = () => {
   return dispatch => {
     if (authService.isAuthenticated()) {

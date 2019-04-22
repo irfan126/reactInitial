@@ -2,9 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Rental = require('../models/rental');
 const User = require('../models/user');
+const NodeGeocoder = require('node-geocoder');
 const { normalizeErrors } = require('../helpers/mongoose');
 
 const UserCtrl = require('../controllers/user');
+
+
+const aws = require('aws-sdk');
+const config = require('../config');
+aws.config.update({
+  secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: config.AWS_ACCESS_KEY_ID,
+  region: 'us-east-2'
+});
+const s3 = new aws.S3();
 
 router.get('/secret', UserCtrl.authMiddleware, function(req, res) {
   res.json({"secret": true});
@@ -16,7 +27,8 @@ router.get('/filter', function(req, res) {
   console.log(req.query);
   const query = category ? {category: category.toLowerCase()} : {};
 
-  Rental.find(query)
+  Rental.where({adActive: true})
+      .find(query)
       .select('-bookings')
       .exec(function(err, foundRentals) {
 
@@ -88,28 +100,53 @@ router.patch('/:id', UserCtrl.authMiddleware, function(req, res) {
 
   const rentalData = req.body;
   const user = res.locals.user;
+console.log(rentalData);
+
+const options = {
+                  provider: 'google',
+                   // Optional depending on the providers
+                  httpAdapter: 'https', // Default
+                  apiKey: 'AIzaSyDW9tFSqG2mA0ym2NluRBVGZ6tPr8xbwRM', // for Mapquest, OpenCage, Google Premier
+                  formatter: null         // 'gpx', 'string', ...
+    };
+
+  const geocoder = NodeGeocoder(options);
 
   Rental
     .findById(req.params.id)
-    .populate('user')
+    .populate('user', '-password -passwordActive -PasswordTry -resetPasswordToken -activationToken -accActivation -rentals -bookings -username -email -password -activationTokenExpires -resetPasswordExpires')
     .exec(function(err, foundRental) {
 
-      if (err) {
-        return res.status(422).send({errors: normalizeErrors(err.errors)});
-      }
+      if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
 
-      if (foundRental.user.id !== user.id) {
-        return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});
-      }
+      if (foundRental.user.id !== user.id) { return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]}); }
 
+      if (rentalData['adActive']) { rentalData['adActiveDate'] = Date.now();}
       foundRental.set(rentalData);
-      foundRental.save(function(err) {
-        if (err) {
-          return res.status(422).send({errors: normalizeErrors(err.errors)});
-        }
+      if (rentalData['postcode'] || rentalData['street']) { 
+            geocoder.geocode(`${foundRental.street}, ${foundRental.postcode} `, function(err, value){
+                  if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                  if (value) { console.log(value);
+                            if(!value.length > 0) { return res.status(422).send({errors: [{title: 'Location Error!', detail: 'Please enter a valid address!'}]});}
+                             rentalData['latitude'] = value[0].latitude;
+                             rentalData['longitude'] =value[0].longitude;
+                             rentalData['city'] =value[0].city;
 
-        return res.status(200).send(foundRental);
-      });
+                             foundRental.set(rentalData);
+                            // console.log(foundRental);
+                             foundRental.save(function(err) {
+                                      if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
+                                      return res.status(200).send(foundRental);
+                              });
+                        }
+                });
+        } else {
+                 foundRental.save(function(err) {
+                   //console.log(foundRental);
+                     if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
+                    return res.status(200).send(foundRental);
+                  });
+        }
     });
 });
 
@@ -126,53 +163,88 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
     })
     .exec(function(err, foundRental) {
 
-    if (err) {
-      return res.status(422).send({errors: normalizeErrors(err.errors)});
-    }
+    if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
 
-    if (user.id !== foundRental.user.id) {
-      return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});
-    }
+    if (user.id !== foundRental.user.id) {return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});}
 
-    if (foundRental.bookings.length > 0) {
-      return res.status(422).send({errors: [{title: 'Active Bookings!', detail: 'Cannot delete rental with active bookings!'}]});
-    }
+    if (foundRental.bookings.length > 0) {return res.status(422).send({errors: [{title: 'Active Bookings!', detail: 'Cannot delete rental with active bookings!'}]});}
 
     foundRental.remove(function(err) {
-      if (err) {
-        return res.status(422).send({errors: normalizeErrors(err.errors)});
-      }
+      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
 
-      return res.json({'status': 'deleted'});
+        var s3Files = [];
+        function s3Key(link){ var fileName = link.split('/').slice(-1)[0];
+                              return fileName;
+                            }
+        if (foundRental.image1 !== 'none') {s3Files.push({Key : s3Key(foundRental.image1)});}
+        if (foundRental.image2 !== 'none') {s3Files.push({Key : s3Key(foundRental.image2)});}
+        if (foundRental.image3 !== 'none') {s3Files.push({Key : s3Key(foundRental.image3)});}
+        if (foundRental.image4 !== 'none') {s3Files.push({Key : s3Key(foundRental.image4)});}
+        if (foundRental.image5 !== 'none') {s3Files.push({Key : s3Key(foundRental.image5)});}
+        if (s3Files.length > 0){
+                          var params = {Bucket: 'bwm-image-dev', Delete: {Objects: s3Files, Quiet: false}};
+                          s3.deleteObjects(params, function(err, data) {
+                              if (err) {return res.status(422).send({errors: [{title: 'Delete Image Error', detail: err.message}]});}
+                                 return res.json({'status': 'deleted and Images deleted'});
+                              });
+                        } 
+          else {return res.json({'status': 'deleted'}); }
     });
   });
 });
 
 router.post('', UserCtrl.authMiddleware, function(req, res) {
-  const { title, city, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate } = req.body;
-  const user = res.locals.user;
+  const { title, postcode, street, category, image1, image2, image3, image4, image5, description, dailyRate, perRate, emailContact, phone, weblink } = req.body;
+ console.log(phone);
+  const options = {
+                  provider: 'google',
+                   // Optional depending on the providers
+                  httpAdapter: 'https', // Default
+                  apiKey: 'AIzaSyDW9tFSqG2mA0ym2NluRBVGZ6tPr8xbwRM', // for Mapquest, OpenCage, Google Premier
+                  formatter: null         // 'gpx', 'string', ...
+    };
 
-  const rental = new Rental({title, city, street, category, image1, image2, image3, image4, image5, shared, bedrooms, description, dailyRate});
-  rental.user = user;
+  const geocoder = NodeGeocoder(options);
 
-  Rental.create(rental, function(err, newRental) {
-    if (err) {
-      return res.status(422).send({errors: normalizeErrors(err.errors)});
-    }
+  geocoder.geocode(`${street}, ${postcode} `, function(err, value){
+      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+      if (value) {
+                if(!value.length > 0) { return res.status(422).send({errors: [{title: 'Location Error!', detail: 'Please enter a valid address!'}]});}
+                const latitude = value[0].latitude;
+                const longitude =value[0].longitude;
+                const city =value[0].city;
+                const user = res.locals.user;
 
-    User.update({_id: user.id}, { $push: {rentals: newRental}}, function(){});
+                const rental = new Rental({title, postcode, city, street,  latitude, longitude, category, image1, image2, image3, image4, image5, description, dailyRate, perRate, emailContact, phone, weblink});
+                rental.user = user;
 
-    return res.json(newRental);
-  }); 
+                Rental.create(rental, function(err, newRental) {
+                      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                      User.update({_id: user.id}, { $push: {rentals: newRental}}, function(){});
+                        return res.json(newRental);
+              }); 
+        }
+  });
 });
 
 router.get('', function(req, res) {
-  const city = req.query.city;
-     console.log('searchInput');
-     console.log(req.query);
-  const query = city ? {city: city.toLowerCase()} : {};
 
-  Rental.find(query)
+const city = req.query.city;
+     console.log('searchInput');
+     console.log(req.query);  
+var query = {};
+
+if (city){ 
+    var andArray = [];
+    var searchTerms = city.split(" ");
+         searchTerms.forEach(function(searchTerm) {
+         andArray.push( {city: { $regex: searchTerm, $options:'i' }}, { title: { $regex: searchTerm, $options:'i' }}  );
+          });
+        query = andArray;
+        }
+        
+  Rental.where({adActive: true})
+      .find().or(query)
       .select('-bookings')
       .exec(function(err, foundRentals) {
 
