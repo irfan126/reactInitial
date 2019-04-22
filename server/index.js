@@ -33,7 +33,7 @@ app.use('/api/v1', imageDeleteRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {
-  const appPath = path.join(__dirname, '..', 'build');
+  const appPath = path.join(__dirname, '..', 'dist');
   app.use(express.static(appPath));
 
   app.get('*', function(req, res) {
