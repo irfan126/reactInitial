@@ -5,7 +5,8 @@ module.exports = {
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   STRIPE_SK: process.env.STRIPE_SK,
   GMAIL_USERNAME: process.env.GMAIL_USERNAME,
-  GMAIL_PASSWORD: process.env.GMAIL_PASSWORD
+  GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
+  APP_URI: process.env.APP_URI
 }
 
 
