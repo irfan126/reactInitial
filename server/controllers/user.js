@@ -5,7 +5,7 @@ const config = require('../config');
 const crypto = require('crypto');
 const nodeMailer = require('nodemailer');
 //import crypto from 'crypto';
-
+const mailjet = require ('node-mailjet').connect(config.MJ_APIKEY_PUBLIC, config.MJ_APIKEY_PRIVATE)
 
 exports.getUser = function(req, res) {
   const requestedUserId = req.params.id;
@@ -83,46 +83,37 @@ exports.auth =  function(req, res) {
         } 
     else {
           const token = crypto.randomBytes(20).toString('hex');
-          const transporter = nodeMailer.createTransport({
-                                      service: 'gmail',
-                                      auth: {
-                                              user: `${config.GMAIL_USERNAME}`,
-                                              pass: `${config.GMAIL_PASSWORD}`,
-                                            },
-                              });
+          const request = mailjet
+                .post("send", {'version': 'v3.1'})
+                .request({"Messages":[{"From": {"Email": `registration@${config.APP_WEBLINK}`,"Name": `${config.APP_NAME}`},
+                                            "To": [{//"Email": `${email}`,
+                                                    "Email": 'irfan126@gmail.com',"Name":  `${user.username}`}],
+                                            "Subject": "Link To Activate account",
+                                            "TextPart": `Welcome to ${config.APP_NAME}!`,
+                                            "HTMLPart": 'You are receiving this email because you (or someone else) have created account. <br /><br />'
+            + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:<br /><br />'
+            + `${config.APP_URI}/activateaccount/${token}<br /><br />`
+            + 'If you did not request this, please ignore this email.<br />',
+                                      }]
+                        })
+                    request.then((result) => {
+                                              //console.log(result.body);
+                                              console.log('mailjet successful');
+                                              user.set({
+                                                          activationToken: token,
+                                                          activationTokenExpires: Date.now() + 360000,
+                                                          accActivation: false
+                                                        });
 
-        const mailOptions = {
-                            from: `${config.GMAIL_USERNAME}`,
-                            //to: `${user.email}`,
-                            to: 'irfan126@gmail.com',
-                            subject: 'Link To Activate account',
-                            text:
-            'You are receiving this because you (or someone else) have created account.\n\n'
-            + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
-            + `${config.APP_URI}/activateaccount/${token}\n\n`
-            + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
-                            };
-
-        transporter.sendMail(mailOptions, (err, response) => {
-                            if (err) {
-                                      console.error('there was an error: ', err);
-                                      return res.status(422).send({errors: normalizeErrors(err.errors)});
-                                    } 
-                            else {
-                      console.log('here is the res: ', response);
-                      //  res.status(200).json('recovery email sent');
-                      user.set({
-                                        activationToken: token,
-                                        activationTokenExpires: Date.now() + 360000,
-                                        accActivation: false
-                                      });
-
-                      user.save(function(err) {
-                                                        if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
-                                return res.status(422).send({errors: [{title: 'Invalid Acctivation!', detail: 'To complete registration please follow the activation link resent to your email address.'}]});
-                                                      })
-                                  }
-                            });
+                                              user.save(function(err) {
+                                                                      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                                                  return res.status(422).send({errors: [{title: 'Invalid Acctivation!', detail: 'To complete registration please follow the activation link resent to your email address.'}]});
+                                                                        })
+                                })
+                                .catch((err) => {//console.log(err.statusCode);
+                                            console.log('mailjet errors');
+                                            return res.status(422).send({errors: normalizeErrors(err.errors)});
+                                            })
 // return res.status(422).send({errors: [{title: 'Invalid Acctivation!', detail: 'There has been an error with your Activation request. Please request a new Activation link below!'}]});
     }
   });
@@ -146,51 +137,40 @@ exports.register =  function(req, res) {
     }
 
     if (!existingUser) {
-
           const token = crypto.randomBytes(20).toString('hex');
-          const transporter = nodeMailer.createTransport({
-                                      service: 'gmail',
-                                      auth: {
-                                              user: `${config.GMAIL_USERNAME}`,
-                                              pass: `${config.GMAIL_PASSWORD}`,
-                                            },
-                              });
+          const request = mailjet
+                .post("send", {'version': 'v3.1'})
+                .request({"Messages":[{"From": {"Email": `registration@${config.APP_WEBLINK}`,"Name": `${config.APP_NAME}`},
+                                            "To": [{//"Email": `${email}`,
+                                                    "Email": 'irfan126@gmail.com',"Name":  `${username}`}],
+                                            "Subject": "Link To Activate account",
+                                            "TextPart": `Welcome to ${config.APP_NAME}!`,
+                                            "HTMLPart": 'You are receiving this email because you (or someone else) have created account. <br /><br />'
+            + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:<br /><br />'
+            + `${config.APP_URI}/activateaccount/${token}<br /><br />`
+            + 'If you did not request this, please ignore this email.<br />',
+                                      }]
+                        })
+                    request.then((result) => {
+                            //console.log(result.body);
+                            console.log('mailjet successful');
+                            const user = new User({
+                                                    username,
+                                                    email,
+                                                    password,
+                                                    activationToken: token,
+                                                    activationTokenExpires: Date.now() + 360000
+                                                  });
 
-        const mailOptions = {
-                            from: `${config.GMAIL_USERNAME}`,
-                            //to: `${email}`,
-                            to: 'irfan126@gmail.com',
-                            subject: 'Link To Activate account',
-                            text:
-            'You are receiving this because you (or someone else) have created account.\n\n'
-            + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
-            + `${config.APP_URI}/activateaccount/${token}\n\n`
-            + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
-                            };
-
-        transporter.sendMail(mailOptions, (err, response) => {
-                            if (err) {
-                                      console.error('there was an error: ', err);
-                                      return res.status(422).send({errors: normalizeErrors(err.errors)});
-                                    } 
-                            else {
-                                  console.log('here is the res: ', response);
-                                  const user = new User({
-                                                          username,
-                                                          email,
-                                                          password,
-                                                          activationToken: token,
-                                                          activationTokenExpires: Date.now() + 360000
-                                                      });
-
-                                  user.save(function(err) {
-                                                            if (err) {
-                                        return res.status(422).send({errors: normalizeErrors(err.errors)});
-                                                                      }
-                                                          return res.json({'To complete registration please follow the activation link sent to your email address.': true});
-                                                          })
-                                  }
-                            });
+                             user.save(function(err) {
+                                                      if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                                                      return res.json({'To complete registration please follow the activation link sent to your email address.': true});
+                                                      })
+                                })
+                                .catch((err) => {//console.log(err.statusCode);
+                                            console.log('mailjet errors');
+                                            return res.status(422).send({errors: normalizeErrors(err.errors)});
+                                            })
       } 
       else {
         return res.status(422).send({errors: [{title: 'Invalid email!', detail: 'User with this email already exist!'}]});
@@ -244,51 +224,41 @@ exports.activateAccReset =  function(req, res) {
 
   User.findOne({email}, function(err, existingUser) {
     if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
-
     if (existingUser) {
-
     if (existingUser.accActivation) {
       return res.status(422).send({errors: [{title: 'Invalid Activation!', detail: 'Your email address has already been verfied please login!'}]});
     }
         const token = crypto.randomBytes(20).toString('hex');
-        const transporter = nodeMailer.createTransport({
-                                              service: 'gmail',
-                                                  auth: {
-                                                          user: `${config.GMAIL_USERNAME}`,
-                                                          pass: `${config.GMAIL_PASSWORD}`,
-                                                        },
-                                              });
-        const mailOptions = {
-                              from: `${config.GMAIL_USERNAME}`,
-                              //to: `${email}`,
-                              to: 'irfan126@gmail.com',
-                              subject: 'Link To Activate account',
-                              text:
-                'You are receiving this because you (or someone else) have created account.\n\n'
-                + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
-                + `${config.APP_URI}/activateaccount/${token}\n\n`
-                + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
-                            };
-
-        transporter.sendMail(mailOptions, (err, response) => {
-              if (err) {
-                      console.error('there was an error: ', err);
-                      return res.status(422).send({errors: normalizeErrors(err.errors)});
-              } else {
-                      console.log('here is the res: ', response);
-                      //  res.status(200).json('recovery email sent');
-                      existingUser.set({
-                                        activationToken: token,
-                                        activationTokenExpires: Date.now() + 360000,
-                                        accActivation: false
-                                      });
-
-                      existingUser.save(function(err) {
-                                                        if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
-                                return res.json({'To complete registration please follow the activation link sent to your email address.': true});
-                                                      })
-                      }
-          });
+        const request = mailjet
+                .post("send", {'version': 'v3.1'})
+                .request({"Messages":[{"From": {"Email": `registration@${config.APP_WEBLINK}`,"Name": `${config.APP_NAME}`},
+                                            "To": [{//"Email": `${email}`,
+                                                    "Email": 'irfan126@gmail.com',"Name":  `${existingUser.username}`}],
+                                            "Subject": "Link To Activate account",
+                                            "TextPart": `Welcome to ${config.APP_NAME}!`,
+                                            "HTMLPart": 'You are receiving this email because you (or someone else) have created account. <br /><br />'
+            + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:<br /><br />'
+            + `${config.APP_URI}/activateaccount/${token}<br /><br />`
+            + 'If you did not request this, please ignore this email.<br />',
+                                      }]
+                        })
+                    request.then((result) => {
+                            //console.log(result.body);
+                            console.log('mailjet successful');
+                            existingUser.set({
+                                              activationToken: token,
+                                              activationTokenExpires: Date.now() + 360000,
+                                              accActivation: false
+                                            });
+                            existingUser.save(function(err) {
+                                                              if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                                      return res.json({'To complete registration please follow the activation link sent to your email address.': true});
+                                                            })
+                                })
+                                .catch((err) => {//console.log(err.statusCode);
+                                            console.log('mailjet errors');
+                                            return res.status(422).send({errors: normalizeErrors(err.errors)});
+                                            })
       }
     else {return res.status(422).send({errors: [{title: 'Invalid email!', detail: 'User with this email does not exist!'}]});}
     })
@@ -306,12 +276,9 @@ exports.updatePassword =  function(req, res) {
   }
 
   User.findOne({resetPasswordToken}, function(err, existingUser) {
-    if (err) {
-      return res.status(422).send({errors: normalizeErrors(err.errors)});
-    }
+    if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
 
     if (existingUser) {
-
             existingUser.set({
                     resetPasswordToken: null,
                     passwordActive: true,
@@ -320,9 +287,7 @@ exports.updatePassword =  function(req, res) {
               });
 
             existingUser.save(function(err) {
-                  if (err) {
-                      return res.status(422).send({errors: normalizeErrors(err.errors)});
-                  }
+                  if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
 
                   return res.json({'Password reset successfully! Please login with your credentials.': true});
               })
@@ -337,33 +302,27 @@ exports.contactUsRequest =  function(req, res) {
 
   const { email, question } = req.body;
   if (!email || !question) {return res.status(422).send({errors: [{title: 'Data missing!', detail: 'Provide an email and question!'}]});}
-
-    const transporter = nodeMailer.createTransport({
-            service: 'gmail',
-                auth: {
-              user: `${config.GMAIL_USERNAME}`,
-              pass: `${config.GMAIL_PASSWORD}`,
-            },
-        });
-
-        const mailOptions = {
-          from: `${config.GMAIL_USERNAME}`,
-          //to: `${email}`,
-          to: 'irfan126@gmail.com',
-          subject: 'Question',
-          text:
-            'Question need a response.\n\n'
-            + `Question from email: ${email}\n\n`
-            + `Question: ${question}.\n`,
-        };
-
-        transporter.sendMail(mailOptions, (err, response) => {
-          if (err) {
-                  return res.status(422).send({errors: normalizeErrors(err.errors)});
-          } else {
-                  return res.json({'Question Submitted': true});
-                }
-        });
+  const request = mailjet
+                .post("send", {'version': 'v3.1'})
+                .request({"Messages":[{"From": {"Email": `registration@${config.APP_WEBLINK}`,"Name": `${config.APP_NAME}`},
+                                            "To": [{//"Email": `${email}`,
+                                                    "Email": 'irfan126@gmail.com'}],
+                                            "Subject": "Question",
+                                            "TextPart": `Welcome to ${config.APP_NAME}!`,
+                                            "HTMLPart": 'Question need a response. <br /><br />'
+                                                      + `Question from email: ${email}<br /><br />`
+                                                      + `Question: ${question}.<br /><br />`,
+                                      }]
+                        })
+                    request.then((result) => {
+                                                //console.log(result.body);
+                                                console.log('mailjet successful');
+                                                return res.json({'Question Submitted': true});
+                                              })
+                           .catch((err) => {//console.log(err.statusCode);
+                                            console.log('mailjet errors');
+                                            return res.status(422).send({errors: normalizeErrors(err.errors)});
+                                           })
 }
 
 exports.passwordReset =  function(req, res) {
@@ -380,48 +339,34 @@ exports.passwordReset =  function(req, res) {
     }
 
     const token = crypto.randomBytes(20).toString('hex');
-    const transporter = nodeMailer.createTransport({
-            service: 'gmail',
-                auth: {
-              user: `${config.GMAIL_USERNAME}`,
-              pass: `${config.GMAIL_PASSWORD}`,
-            },
-        });
-
-        const mailOptions = {
-          from: `${config.GMAIL_USERNAME}`,
-          //to: `${email}`,
-          to: 'irfan126@gmail.com',
-          subject: 'Link To Reset Password',
-          text:
-            'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
-            + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
-            + `${config.APP_URI}/resetpassword/${token}\n\n`
-            + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
-        };
-
-        transporter.sendMail(mailOptions, (err, response) => {
-          if (err) {
-            console.error('there was an error: ', err);
-                  return res.status(422).send({errors: normalizeErrors(err.errors)});
-          } else {
-            console.log('here is the res: ', response);
-          //  res.status(200).json('recovery email sent');
-
-                existingUser.set({
-                resetPasswordToken: token,
-                resetPasswordExpires: Date.now() + 360000
-    });
-
-    existingUser.save(function(err) {
-      if (err) {
-        return res.status(422).send({errors: normalizeErrors(err.errors)});
-      }
-
-      return res.json({'Password reset successfully! Please follow the link sent your email address.': true});
-    })
-          }
-        });
+    const request = mailjet
+                .post("send", {'version': 'v3.1'})
+                .request({"Messages":[{"From": {"Email": `registration@${config.APP_WEBLINK}`,"Name": `${config.APP_NAME}`},
+                                            "To": [{//"Email": `${email}`,
+                                                    "Email": 'irfan126@gmail.com',"Name":  `${existingUser.username}`}],
+                                            "Subject": "Link To Reset Password",
+                                            "TextPart": `Welcome to ${config.APP_NAME}!`,
+                                            "HTMLPart": 'You are receiving this because you (or someone else) have requested the reset of the password for your account. <br /><br />'
+            + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:<br /><br />'
+            + `${config.APP_URI}/resetpassword/${token}<br /><br />`
+            + 'If you did not request this, please ignore this email and your password will remain unchanged.<br />',
+                                      }]
+                        })
+                    request.then((result) => {
+                            //console.log(result.body);
+                            console.log('mailjet successful');
+                            existingUser.set({ resetPasswordToken: token,
+                                              resetPasswordExpires: Date.now() + 360000
+                                              });
+                            existingUser.save(function(err) {
+                                              if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
+                                              return res.json({'Password reset successfully! Please follow the link sent your email address.': true});
+                                            })
+                                })
+                                .catch((err) => {//console.log(err.statusCode);
+                                            console.log('mailjet errors');
+                                            return res.status(422).send({errors: normalizeErrors(err.errors)});
+                                            })
   })
 }
 

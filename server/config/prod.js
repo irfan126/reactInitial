@@ -6,7 +6,11 @@ module.exports = {
   STRIPE_SK: process.env.STRIPE_SK,
   GMAIL_USERNAME: process.env.GMAIL_USERNAME,
   GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
-  APP_URI: process.env.APP_URI
+  APP_URI: process.env.APP_URI,
+  APP_WEBLINK: process.env.APP_WEBLINK,
+  APP_NAME: process.env.APP_NAME,
+  MJ_APIKEY_PUBLIC: process.env.MJ_APIKEY_PUBLIC,
+  MJ_APIKEY_PRIVATE: process.env.MJ_APIKEY_PRIVATE
 }
 
 
