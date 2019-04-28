@@ -29,7 +29,7 @@ class RentalDetail extends React.Component {
               <div className='col-md-6'>
               <Carousel showArrows={true} showThumbs={false} autoPlay={false} dynamicHeight={false}>
                 <div>
-                    {(rental.image1 === 'none') && <img className='object-fit: contain' alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
+                    {(rental.image1 === 'none') && <img  alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
                     {!(rental.image1 === 'none') && <img className='object-fit: contain' alt='image1' src={rental.image1}/> }
                 </div>
                 <div>
