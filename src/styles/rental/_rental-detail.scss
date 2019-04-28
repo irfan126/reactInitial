@@ -2,6 +2,8 @@
   .upper-section {
     img {
       width: 100%;
+        object-fit: contain !important;
+    background-color: $main-color !important;
     }
 
     margin-bottom: 30px;
