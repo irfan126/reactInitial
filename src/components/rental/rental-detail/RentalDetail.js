@@ -26,7 +26,7 @@ class RentalDetail extends React.Component {
         <section id='rentalDetails'>
           <div className='upper-section'>
             <div className='row'>
-              <div className='col-md-6' style="width:540px; height:400px;">
+              <div className='col-md-6'>
               <Carousel showArrows={true} showThumbs={false} autoPlay={false} dynamicHeight={false}>
                 <div>
                     {(rental.image1 === 'none') && <img alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
