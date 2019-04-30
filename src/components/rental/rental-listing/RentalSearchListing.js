@@ -16,7 +16,7 @@ class RentalSearchListing extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentWillMount() { 
     this.searchRentalsByCity();
   }
 
