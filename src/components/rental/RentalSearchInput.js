@@ -33,7 +33,15 @@ class RentalSearchInput extends React.Component {
     return (
       <div className='form-inline my-2 my-lg-0'>
 
-
+<div className="nav-item dropdown ">
+  <a className="nav-link nav-item dropdown-toggle clickable" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Filter
+  </a>
+  <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('Condo')}}>Condo</button>
+    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('House')}}>House</button>
+  </div>
+</div>
 
 <div className='form-inline  my-2 my-lg-0'>
         <input onKeyPress={(event) => { this.handleKeyPress(event)}}
@@ -45,15 +53,6 @@ class RentalSearchInput extends React.Component {
         <button onClick={() => {this.handleSearch()}}
                 className='btn btn-outline-success my-2 my-sm-0 btn-bwm-search'
                 type='submit'>Search</button>
-</div>
-<div className="nav-item dropdown ">
-  <a className="nav-link nav-item dropdown-toggle clickable" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Filter
-  </a>
-  <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('Condo')}}>Condo</button>
-    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('House')}}>House</button>
-  </div>
 </div>
       </div>
     )

@@ -71,6 +71,12 @@ class Header extends React.Component {
           <button className='navbar-toggler mv1' type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
             <span className='navbar-toggler-icon'  ></span>
           </button>
+          <div className='collapse navbar-collapse' id='navbarNavAltMarkup1'>
+            <div className='navbar-nav ml-auto'>
+                 
+            </div>
+          </div>
+               <RentalSearchInput />
 
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
             <div className='navbar-nav ml-auto'>
@@ -80,11 +86,6 @@ class Header extends React.Component {
               }
               {this.renderOwnerSection(isAuth)}
               {this.renderAuthButtons(isAuth)}
-            </div>
-          </div>
-                    <div className='collapse navbar-collapse' id='navbarNavAltMarkup1'>
-            <div className='navbar-nav ml-auto'>
-                      <RentalSearchInput />
             </div>
           </div>
         </div>
