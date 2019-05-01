@@ -66,7 +66,8 @@ class Header extends React.Component {
           </Link>
 
           <button className='navbar-toggler mv1' type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup1' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
-                      <span><i className='fa fa-search fa-lg mv2'></i></span>
+
+                                  <span className='navbar-toggler-icon'  ></span>
           </button>
           <button className='navbar-toggler mv1' type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
             <span className='navbar-toggler-icon'  ></span>
