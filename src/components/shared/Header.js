@@ -41,7 +41,7 @@ class Header extends React.Component {
     if (isAuth) {
       return (
         <div className="nav-item dropdown">
-          <a className="nav-link nav-item dropdown-toggle clickable" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a className="nav-link nav-item dropdown-toggle clickable" href="#" role="button" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Owner Section
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -73,10 +73,10 @@ class Header extends React.Component {
           </button>
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup1'>
             <div className='navbar-nav ml-auto'>
-                 
+                                <RentalSearchInput />
             </div>
           </div>
-               <RentalSearchInput />
+
 
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
             <div className='navbar-nav ml-auto'>
