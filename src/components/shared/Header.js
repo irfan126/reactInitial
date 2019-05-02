@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import RentalSearchInput from 'components/rental/RentalSearchInput';
+import FilterInput from 'components/rental/FilterInput';
 
 class Header extends React.Component {
 
@@ -65,12 +66,24 @@ class Header extends React.Component {
             <img src={process.env.PUBLIC_URL + '/img/react-logo.svg'} alt=""/>
           </Link>
 
+          <button className='navbar-toggler mv1' type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup2' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
+                      <span className='fa fa-filter mv1'></span>
+          </button>
+
+
+
           <button className='navbar-toggler mv1' type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup1' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
-                      <span className='fa fa-search fa-lg mv2'></span>
+                      <span className='fa fa-search mv1'></span>
           </button>
           <button className='navbar-toggler mv1' type='button' data-toggle='collapse' data-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
             <span className='navbar-toggler-icon'  ></span>
           </button>
+
+                    <div className='collapse navbar-collapse' id='navbarNavAltMarkup2'>
+            <div className='navbar-nav ml-auto'>
+                                <FilterInput />
+            </div>
+          </div>
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup1'>
             <div className='navbar-nav ml-auto'>
                                 <RentalSearchInput />
