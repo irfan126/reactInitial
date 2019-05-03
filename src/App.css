@@ -31,15 +31,6 @@
     .navbar .dropdown-menu .dropdown-item:active {
       background-color: #61dafb; }
 
-.cbs-Item {
-  height: 400px; 
-   width: 100%;
-    border: 5px;
-  display: inline-block;
-  background-size: contain;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
 
 .bwm-form {
   color: #484848; }

@@ -31,8 +31,8 @@ class RentalDetail extends React.Component {
                 <div>
 
 
-                    {(rental.image1 === 'none') && <div className="cbs-Item" style={{"background-image": "url('https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365')"}}></div>}       
-                    {!(rental.image1 === 'none') && <div className="cbs-Item" style={{"background-image": `url(${rental.image1})`}}></div> }
+                    {(rental.image1 === 'none') && <img alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
+                    {!(rental.image1 === 'none') && <img alt='image1' src={rental.image1}/>}
                 </div>
                 <div>
                     {(rental.image2 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
