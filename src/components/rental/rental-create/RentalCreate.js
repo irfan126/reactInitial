@@ -13,8 +13,7 @@ export class RentalCreate extends React.Component {
       errors: [],
       redirect: false
     }
-
-    this.rentalCateogies = ['apartment', 'house', 'condo'];
+    this.rentalCateogies = ['Entertainers', 'Photography', 'Other'];
     this.rentalPerRate = ['Blank', 'per Hour', 'per Day'];
    // this.noImageLink = "https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553026864391";
     this.createRental = this.createRental.bind(this);

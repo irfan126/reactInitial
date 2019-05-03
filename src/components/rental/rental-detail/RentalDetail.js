@@ -29,24 +29,26 @@ class RentalDetail extends React.Component {
               <div className='col-md-6'>
               <Carousel showArrows={true} showThumbs={false} autoPlay={false} dynamicHeight={false}>
                 <div>
-                    {(rental.image1 === 'none') && <img  style={{"height" : "400px", "width" : "540px"}} alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
-                    {!(rental.image1 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='image1' src={rental.image1}/> }
+
+
+                    {(rental.image1 === 'none') && <div className="cbs-Item" style={{"background-image": "url('https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365')"}}></div>}       
+                    {!(rental.image1 === 'none') && <div className="cbs-Item" style={{"background-image": `url(${rental.image1})`}}></div> }
                 </div>
                 <div>
-                    {(rental.image2 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
-                    {!(rental.image2 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='image2' src={rental.image2}/> }
+                    {(rental.image2 === 'none') && <div className="cbs-Item" style={{"background-image": "url('https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365')"}}></div>}       
+                    {!(rental.image2 === 'none') && <div className="cbs-Item" style={{"background-image": `url(${rental.image2})`}}></div> }
                 </div>
                 <div>
-                    {(rental.image3 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
-                    {!(rental.image3 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='image3' src={rental.image3}/> }
+                    {(rental.image3 === 'none') && <div className="cbs-Item" style={{"background-image": "url('https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365')"}}></div>}       
+                    {!(rental.image3 === 'none') && <div className="cbs-Item" style={{"background-image": `url(${rental.image3})`}}></div> }
                 </div>
                 <div>
-                    {(rental.image4 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
-                    {!(rental.image4 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='image4' src={rental.image4}/> }
+                    {(rental.image4 === 'none') && <div className="cbs-Item" style={{"background-image": "url('https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365')"}}></div>}       
+                    {!(rental.image4 === 'none') && <div className="cbs-Item" style={{"background-image": `url(${rental.image4})`}}></div> }
                 </div>
                 <div>
-                    {(rental.image5 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='imageNone' src={'https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365'}/>}       
-                    {!(rental.image5 === 'none') && <img style={{"height" : "400px", "width" : "540px"}} alt='image5' src={rental.image5}/> }
+                    {(rental.image5 === 'none') && <div className="cbs-Item" style={{"background-image": "url('https://s3.eu-west-2.amazonaws.com/bwm-image-dev/1553036875365')"}}></div>}       
+                    {!(rental.image5 === 'none') && <div className="cbs-Item" style={{"background-image": `url(${rental.image5})`}}></div> }
                 </div>
             </Carousel>
               </div>

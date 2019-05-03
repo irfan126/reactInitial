@@ -24,8 +24,9 @@ class FilterInput extends React.Component {
      <span className='fa fa-filter fa-2x mv1'></span>
   </a>
   <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('Condo')}}>Condo</button>
-    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('House')}}>House</button>
+    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('Entertainers')}}>Entertainers</button>
+    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('Photography')}}>Photography</button>
+    <button className="dropdown-item" type='submit' onClick={() => {this.handleFilter('Other')}}>Other</button>
   </div>
 </div>
 

@@ -153,5 +153,5 @@ const validate = values => {
 export default reduxForm({
   form: 'rentalCreateForm',
   validate,
-  initialValues: {perRate: 'per Day',category: 'apartment', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
+  initialValues: {perRate: 'per Day',category: 'Other', latitude: 0, longitude: 0, image1: 'none', image2: 'none', image3: 'none', image4: 'none', image5: 'none'}
 })(RentalCreateForm)
