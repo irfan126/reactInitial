@@ -6,8 +6,8 @@
     height: 50px;
     width: 250px !important; }
   .navbar .navbar-brand {
-    margin-right: 30px;
-    font-size: 27px;
+    margin-right: 20px;
+    font-size: 25px;
     letter-spacing: 1px;
     color: #61dafb !important;
     font-weight: 500; }
@@ -30,7 +30,6 @@
     font-size: 14px; }
     .navbar .dropdown-menu .dropdown-item:active {
       background-color: #61dafb; }
-
 
 .bwm-form {
   color: #484848; }
