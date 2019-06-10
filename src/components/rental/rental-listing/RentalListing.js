@@ -3,7 +3,7 @@ import { RentalList } from './RentalList';
 import { connect } from 'react-redux';
 
 import * as actions from 'actions';
-
+//wether you want to learn how to bake a cake or knit a scarve find an instructor to get you started.  
 
 class RentalListing extends React.Component {
 
@@ -14,7 +14,7 @@ class RentalListing extends React.Component {
   render() {
     return (
       <section id="rentalListing">
-        <h1 className="page-title">Your Home All Around the World</h1>
+        <h1 className="page-title">Inexpensive courses for beginners, try a new skill or become an instructor.</h1>
         <RentalList rentals={this.props.rentals} />
       </section>
     )

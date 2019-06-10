@@ -47,7 +47,7 @@ class RentalSearchListing extends React.Component {
     }
 
     if(data.length > 0) {
-      title = `Your Home in City of ${toUpperCase(searchedCity)}`;
+      title = `Your search results of ${toUpperCase(searchedCity)}`;
     }
 
     return <h1 className="page-title">{title}</h1>

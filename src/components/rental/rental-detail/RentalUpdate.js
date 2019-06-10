@@ -99,23 +99,13 @@ class RentalUpdate extends React.Component {
                                    resetErrors={this.resetRentalErrors}  />
 <hr className='mv2'></hr>
 
-<p className='mv0 blue'>Price:</p>
+<p className='mv0 blue'>Course Price:</p>
                     <EditableInput entity={rental}
                                     entityField={'dailyRate'}
         type="number"
         pattern="[0-9]*" 
                                     className={`rental-type ${rental.dailyRate} v-mid`}
                                     updateEntity={this.updateRental}
-                                    errors={errors}
-                                    resetErrors={this.resetRentalErrors} />
-<hr className='mv2'></hr>
-
-<p className='mv0 blue'>Rate:</p>
-                    <EditableSelect entity={rental}
-                                    entityField={'perRate'}
-                                    className={`rental-type ${rental.perRate} v-mid`}
-                                    updateEntity={this.updateRental}
-                                    options={['Blank', 'per hour', 'per day']}
                                     errors={errors}
                                     resetErrors={this.resetRentalErrors} />
 <hr className='mv2'></hr>
@@ -136,12 +126,13 @@ class RentalUpdate extends React.Component {
                                     entityField={'category'}
                                     className={`rental-type ${rental.category} v-mid`}
                                     updateEntity={this.updateRental}
-                                    options={['apartment', 'house', 'condo']}
+                                    options={['DIY and Gardening', 'Food and Drink',
+                                     'Hair and Beauty', 'Health and Fitness', 'Hobbies and Craft', 'Photography', 'Other']}
                                     errors={errors}
                                     resetErrors={this.resetRentalErrors} />
 <hr className='mv2'></hr>
 
-<p className='mv0 blue'>Address:</p>
+<p className='mv0 blue'>Course Location:</p>
 <BwmResError errors={errors} />
                             <p className='mv0 f6 blue'>Street:</p>
                             <h2 className='rental-city mt1'>{toUpperCase(rental.street)}</h2>

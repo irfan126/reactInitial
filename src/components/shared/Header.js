@@ -46,8 +46,8 @@ class Header extends React.Component {
             Owner Section
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <Link className="dropdown-item" to="/rentals/new">Create Rental</Link>
-            <Link className="dropdown-item" to="/rentals/manage">Manage Rentals</Link>
+            <Link className="dropdown-item" to="/rentals/new">Create Course</Link>
+            <Link className="dropdown-item" to="/rentals/manage">Manage Course</Link>
            {/*  <Link className="dropdown-item" to="/bookings/manage">Manage Bookings</Link>*/}
           </div>
         </div>
