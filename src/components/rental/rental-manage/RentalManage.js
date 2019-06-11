@@ -55,15 +55,14 @@ export class RentalManage extends React.Component {
     return (
       <section id='userRentals'>
         <ToastContainer />
-        <h1 className='page-title'>My Rentals</h1>
+        <h1 className='page-title'>My Courses</h1>
         <div className='row'>
         {this.renderRentalCards(userRentals)}
         </div>
         { !isFetching && userRentals.length === 0 &&
           <div className='alert alert-warning'>
-            You dont have any rentals currenty created. If you want advertised your property
-            please follow this link.
-            <Link style={{'marginLeft': '10px'}} className='btn btn-bwm' to='/rentals/new'>Register Rental</Link>
+            You dont have any courses currenty created. If you want to advertise your course please follow this link.
+            <Link style={{'marginLeft': '10px'}} className='btn btn-bwm' to='/rentals/new'>Register Course</Link>
           </div>
         }
       </section>

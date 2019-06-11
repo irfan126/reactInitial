@@ -46,7 +46,7 @@ class RentalFilterListing extends React.Component {
     }
 
     if(data.length > 0) {
-      title = `Your Home in Category of ${toUpperCase(searchedCategory)}`;
+      title = `Your search results in Category of ${toUpperCase(searchedCategory)}`;
     }
 
     return <h1 className="page-title">{title}</h1>

@@ -41,7 +41,7 @@ export class Register extends React.Component {
             </div>
             <div className='col-md-6 ml-auto'>
               <div className='image-container'>
-                <h2 className='catchphrase'>As our member you have access to most awesome places in the world.</h2>
+                <h2 className='catchphrase'>As our member you can create a course and earn money by teaching people.</h2>
                 <img src={process.env.PUBLIC_URL + '/img/register-image.jpg'} alt=""/>
               </div>
             </div>

@@ -14,6 +14,7 @@ import RentalDetail from 'components/rental/rental-detail/RentalDetail';
 import RentalUpdate from 'components/rental/rental-detail/RentalUpdate';
 import { RentalCreate } from 'components/rental/rental-create/RentalCreate';
 import Login from 'components/login/Login';
+import { Teach } from 'components/help/Teach';
 import { ContactUs } from 'components/help/ContactUs';
 import { AboutUs } from 'components/help/AboutUs';
 import { PasswordReset } from 'components/login/PasswordReset';
@@ -66,9 +67,10 @@ class App extends Component {
                 <ProtectedRoute exact path='/rentals/new' component={RentalCreate} />
                 <Route exact path='/rentals/:id' component={RentalDetail} />
                 <Route exact path='/rentals/:id/edit' component={RentalUpdate} />
-                <Route exact path='/login' component={Login} />
+                <Route exact path='/teach' component={Teach} />
                 <Route exact path='/contactUs' component={ContactUs} />
                 <Route exact path='/aboutUs' component={AboutUs} />
+                <Route exact path='/login' component={Login} />
                 <Route exact path='/passwordreset' component={PasswordReset} />
                 <Route exact path='/resetpassword/:token' component={ResetPassword} />
                 <Route exact path='/activateaccount/:token' component={ActivateAccount} />

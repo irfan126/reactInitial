@@ -37,7 +37,7 @@ router.get('/filter', function(req, res) {
     }
 
     if (category && foundRentals.length === 0) {
-      return res.status(422).send({errors: [{title: 'No Rentals Found!', detail: `There are no rentals for category ${category}`}]});
+      return res.status(422).send({errors: [{title: 'No Courses Found!', detail: `There are no Courses for category ${category}`}]});
     }
 
     return res.json(foundRentals);
@@ -72,7 +72,7 @@ router.get('/:id/verify-user', UserCtrl.authMiddleware, function(req, res) {
       }
 
       if (foundRental.user.id !== user.id) {
-        return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});
+        return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not course owner!'}]});
       }
 
 
@@ -89,7 +89,7 @@ router.get('/:id', function(req, res) {
         .exec(function(err, foundRental) {
 
     if (err || !foundRental) {
-      return res.status(422).send({errors: [{title: 'Rental Error!', detail: 'Could not find Rental!'}]});
+      return res.status(422).send({errors: [{title: 'Course Error!', detail: 'Could not find Course!'}]});
     }
 
     return res.json(foundRental);
@@ -119,7 +119,7 @@ const options = {
 
       if (err) { return res.status(422).send({errors: normalizeErrors(err.errors)}); }
 
-      if (foundRental.user.id !== user.id) { return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]}); }
+      if (foundRental.user.id !== user.id) { return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not course owner!'}]}); }
 
       if (rentalData['adActive']) { rentalData['adActiveDate'] = Date.now();}
       foundRental.set(rentalData);
@@ -165,9 +165,9 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res) {
 
     if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
 
-    if (user.id !== foundRental.user.id) {return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});}
+    if (user.id !== foundRental.user.id) {return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not the course owner!'}]});}
 
-    if (foundRental.bookings.length > 0) {return res.status(422).send({errors: [{title: 'Active Bookings!', detail: 'Cannot delete rental with active bookings!'}]});}
+    if (foundRental.bookings.length > 0) {return res.status(422).send({errors: [{title: 'Active Bookings!', detail: 'Cannot delete course with active bookings!'}]});}
 
     foundRental.remove(function(err) {
       if (err) {return res.status(422).send({errors: normalizeErrors(err.errors)});}
@@ -253,7 +253,7 @@ if (city){
     }
 
     if (city && foundRentals.length === 0) {
-      return res.status(422).send({errors: [{title: 'No Rentals Found!', detail: `There are no rentals for city ${city}`}]});
+      return res.status(422).send({errors: [{title: 'No Courses Found!', detail: `There are no courses for ${city}`}]});
     }
 
     return res.json(foundRentals);
