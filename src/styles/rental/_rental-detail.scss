@@ -82,6 +82,7 @@ max-width: 100%;
       &-description {
         font-weight: 300;
         margin-bottom: 30px;
+         white-space: pre-wrap;
       }
 
       &-assets {
