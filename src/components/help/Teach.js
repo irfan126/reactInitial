@@ -11,7 +11,12 @@ export class Teach extends React.Component {
           <div className='row'>
             <div className='col-md-5'>
               <h1>Become an Instructor</h1>
-              <p>Inexpensive courses for beginners, try a new skill or become an instructor.</p>
+              <p>Share your knowledge, experience and skills to inspire others.</p>
+
+                            <p>If you have expertise or a background in a particular field, create a course to help others learn.
+                            It could be as simple cooking a partiuclar cuisine or learning to knit.</p>
+
+                                                        <p>If you have any further question please contact us.</p>
                                         <div className='alert alert-warning'>
                           If you want advertise your course please Register.
             <Link style={{'marginLeft': '10px'}} className='btn btn-bwm' to='/register'>Register</Link>

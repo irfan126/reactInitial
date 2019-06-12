@@ -15,7 +15,7 @@ export function RentalDetailInfo(props) {
         <h1 className='rental-title'>{rental.title}</h1>       
         <h3 className='booking-price'>Course Price: £{rental.dailyRate}</h3> 
         <hr></hr>
-        <p className='rental-description'>
+        <p className='rental-description .pre'>
           {rental.description}
         </p>
         <hr></hr>
