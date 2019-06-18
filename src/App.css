@@ -238,7 +238,8 @@
       margin-right: 2px; }
   #rentalDetails .details-section .rental-description {
     font-weight: 300;
-    margin-bottom: 30px; }
+    margin-bottom: 30px;
+    white-space: pre-wrap; }
   #rentalDetails .details-section .rental-assets .title {
     margin-bottom: 10px;
     font-weight: 700;

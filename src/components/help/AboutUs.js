@@ -10,8 +10,8 @@ export class AboutUs extends React.Component {
           <div className='row'>
             <div className='col-md-5'>
               <h1>About Us</h1>
-              <p>Inexpensive courses for beginners, try a new skill or become an instructor.</p>
-              <p>Our aim is to help people learn new skill in a face to face</p>
+              <p>Courses for beginners, try a new skill or become an instructor.</p>
+              <p>Our aim is to help people learn new skill in a face to face enviroment.</p>
             </div>
             <div className='col-md-6 ml-auto'>
               <div className='image-container'>
